@@ -18,7 +18,6 @@ function UsersList() {
           // Handle the error here, e.g., show an error message to the user
         }
       }
-  
       fetchUsers();
     }, []);
   
@@ -46,6 +45,7 @@ function UsersList() {
                             <th>Is Admin?</th>
                             <th>Date Registered</th>
                             <th>Registration Confirmed?</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,6 +59,9 @@ function UsersList() {
                                 <td>{(user.is_admin) ? '✅' : 'no'}</td>
                                 <td>{user.date_registered}</td>
                                 <td>{(user.registration_confirmed) ? '✅': 'not yet'}</td>
+                                <td>
+								    <Link to={`/edit/${user.user_id}`} className="btn btn-warning btn-sm">Edit</Link>
+							    </td>
                             </tr>
                         ))
 

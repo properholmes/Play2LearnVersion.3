@@ -1,6 +1,6 @@
 <?php
 
-header("Access-Control-Allow-Origin:*");
+header("Access-Control-Allow-Origin:* ");
 
 header("Access-Control-Allow-Headers:* ");
 
@@ -16,6 +16,12 @@ $db = new PDO($dsn, $username, $password);
 
   if($method === 'GET') {
 
+    if(isset($_GET['user_id']))
+    {
+        //fetch single user data
+        
+    }
+
     $query = 'SELECT user_id, first_name, last_name, email, username, is_admin, date_registered, registration_confirmed
         FROM users';
     $stmt = $db->prepare($query);
@@ -27,5 +33,26 @@ $db = new PDO($dsn, $username, $password);
     }
 
     echo json_encode($users);
-}
+    }
+    
+    if($method === 'POST') {
+	$form_data = json_decode(file_get_contents('php://input'));
+
+	$data = array(
+		':first_name'		    =>	$form_data->first_name,
+		':last_name'		    =>	$form_data->last_name,
+        ':username'             =>  $form_data->username ?? 'default_username', // Provide a default value if username is not present
+		':email'			    =>	$form_data->email, 
+        ':pass_phrase'			=>	$form_data->pass_phrase, 
+        ':registration_confirmed' => 1
+	);
+
+	$query = 'INSERT INTO users (first_name, last_name, username, email, pass_phrase, registration_confirmed) VALUES (:first_name, :last_name, :username, :email, :pass_phrase, :registration_confirmed)';
+
+	$statement = $db->prepare($query);
+
+	$statement->execute($data);
+
+	echo json_encode(["success" => "done"]);
+    }
 ?>
