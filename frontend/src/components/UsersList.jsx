@@ -6,8 +6,7 @@ function UsersList() {
     const [users, setUsers] = useState([]);
   
     useEffect(() => {
-      const apiURL = 'http://localhost:8888/phpreact/frontend/backend/users.php'; //assuming users.php is in the backend folder
-  
+      const apiURL = 'http://localhost:8888/phpreact/frontend/backend/users.php'; //location of user api logic
       async function fetchUsers() {
         try {
           const response = await fetch(apiURL);

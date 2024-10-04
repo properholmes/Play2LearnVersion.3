@@ -16,12 +16,26 @@ $db = new PDO($dsn, $username, $password);
 
   if($method === 'GET') {
 
-    if(isset($_GET['user_id']))
-    {
+    if(isset($_GET['id'])){
         //fetch single user data
-        
-    }
+        $query = "SELECT * FROM users WHERE user_id = '".$_GET["id"]."'";
+        $result = $db->query($query, PDO::FETCH_ASSOC);
+        $data = array();
+        foreach($result as $row)
+        {
+            $data['user_id'] = $row['user_id'];
+            $data['first_name'] = $row['first_name'];
+            $data['last_name'] = $row['last_name'];
+            $data['email'] = $row['email'];
+            $data['username'] = $row['username'];
+            $data['pass_phrase'] = $row['pass_phrase'];
+        }
 
+        echo json_encode($data);
+
+    }
+    else {
+    //fetch all users
     $query = 'SELECT user_id, first_name, last_name, email, username, is_admin, date_registered, registration_confirmed
         FROM users';
     $stmt = $db->prepare($query);
@@ -34,7 +48,8 @@ $db = new PDO($dsn, $username, $password);
 
     echo json_encode($users);
     }
-    
+
+}
     if($method === 'POST') {
 	$form_data = json_decode(file_get_contents('php://input'));
 
