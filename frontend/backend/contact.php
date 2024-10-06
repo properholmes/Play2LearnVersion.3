@@ -1,41 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Send Email Test</title>
-</head>
-<body>
-<main>
 <?php
-  if (!isset($_POST['send'])) {
-?>
-  <form method="post" action="mail.php">
-    <label for="email">Email:</label>
-    <input id="email" name="email">
-    <button name="send">Send Test Email</button>
-  </form>
-<?php
-  } else {
-    require_once 'mail-config.php';
+ini_set('display_errors', 1);
 
-    $now = date('r'); // Formatted date / time
+header("Access-Control-Allow-Origin:* ");
+header("Access-Control-Allow-Headers:* ");
+header("Access-Control-Allow-Methods:* ");
+
+$method = $_SERVER['REQUEST_METHOD'];
+
+$dsn = 'mysql:host=localhost;dbname=play2learn';
+$username = 'root';
+$password = 'pwdpwd';
+
+$db = new PDO($dsn, $username, $password);
+
+
+if ($method === 'POST') {
+  // Prepare INSERT query and pass data directly to execute()
+  $form_data = json_decode(file_get_contents('php://input'));
+  $query = 'INSERT INTO reviews (user_id, review, featured) VALUES (?, ?, ?)';
+  $stmt = $db->prepare($query);
   
-    try {
-      $mail = createMailer(true);
-      $mail->addAddress($_POST['email'], 'Play2Learn Student');
-      $mail->Subject = 'Test Email';
-      $mail->Body = "<p><strong>Email works!</strong> - $now</p>";
-      $mail->AltBody = "Email works! - $now";
+  //trimming data recieved from form
+  $review = trim($form_data->review ?? '');
+
+  //create empty arrays for errors handle error validation
   
-      $mail->send();
-      echo "<p class='success'>Test email sent.</p>";
-    } catch (Exception $e) {
-      echo "<p class='error'>We could not send your email.</p>";
-      logError($e);
-    }
-  }
-?>
-</main>
-</body>
-</html>
+      $errors = [];
+
+      if(!$review) {
+          $errors[] = 'Review is required';
+      }
+ 
+
+      if(empty($errors)) {
+          $stmt->execute([$form_data->user_id, $form_data->review, 1]);
+          echo json_encode(["success" => "done"]);
+      } else {
+          echo json_encode($errors);
+      }
+}
+  ?>
+  

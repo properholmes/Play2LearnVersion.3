@@ -2,7 +2,8 @@ import { useState } from 'react';
 import {Routes, Route} from 'react-router-dom';
 import About from './components/About.jsx';
 import anagrams from "./components/anagramhunt/anagramsArray.js";
-import EditUser from "./components/EditUser.jsx"
+import Contact from "./components/Contact.jsx";
+import EditUser from "./components/EditUser.jsx";
 import Footer from "./components/Footer.jsx";
 import GamePlay from './components/anagramhunt/GamePlay.jsx';
 import GameScore from './components/anagramhunt/GameScore.jsx';
@@ -80,9 +81,10 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/admin" element={<UsersList />} />
+        <Route exact path="/contact" element={<Contact />} />
         <Route path="/edit/:user_id" element={<EditUser />} />
         <Route path="/viewaccount/:user_id" element={<ViewAccount />} />
-        <Route path="/reviews" element={<Reviews />} />
+        <Route path="/reviews/:user_id" element={<Reviews />} />
     </Routes>
     <Footer />
     </>
