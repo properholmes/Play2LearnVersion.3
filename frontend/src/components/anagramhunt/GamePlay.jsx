@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Score from "./Score";
-import Timer from "./Timer";
-import Left from "./Left";
-import UserGuesses from "./UserGuesses";
-import SolveMe from "./SolveMe";
-import TextInput from "./TextInput";
-import Keyboard from "./KeyBoard";
+import Score from "./Score.jsx";
+import Timer from "./Timer.jsx";
+import Left from "./Left.jsx";
+import UserGuesses from "./UserGuesses.jsx";
+import SolveMe from "./SolveMe.jsx";
+import TextInput from "./TextInput.jsx";
+import Keyboard from "./KeyBoard.jsx";
 import anagrams from "./anagramsArray.js"
 
 function GamePlay(props) {

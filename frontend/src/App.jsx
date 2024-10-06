@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import {Routes, Route} from 'react-router-dom';
-import About from './components/About';
+import About from './components/About.jsx';
 import anagrams from "./components/anagramhunt/anagramsArray.js";
-import EditUser from "./components/EditUser"
-import Footer from "./components/Footer";
-import GamePlay from './components/anagramhunt/GamePlay';
-import GameScore from './components/anagramhunt/GameScore';
-import GameSetup from './components/anagramhunt/GameSetup';
-import Header from "./components/Header";
-import Homepage from './components/Homepage';
-import Login from './components/Login';
-import Mathfacts from './components/Mathfacts'
-import Register from './components/Register';
-import UsersList from './components/UsersList';
+import EditUser from "./components/EditUser.jsx"
+import Footer from "./components/Footer.jsx";
+import GamePlay from './components/anagramhunt/GamePlay.jsx';
+import GameScore from './components/anagramhunt/GameScore.jsx';
+import GameSetup from './components/anagramhunt/GameSetup.jsx';
+import Header from "./components/Header.jsx";
+import Homepage from './components/Homepage.jsx';
+import Login from './components/Login.jsx';
+import Mathfacts from './components/Mathfacts.jsx'
+import Register from './components/Register.jsx';
+import Reviews from './components/Reviews.jsx'
+import UsersList from './components/UsersList.jsx';
 import ViewAccount from './components/ViewAccount.jsx';
 import './anaApp.css'
 
@@ -81,6 +82,7 @@ function App() {
         <Route exact path="/admin" element={<UsersList />} />
         <Route path="/edit/:user_id" element={<EditUser />} />
         <Route path="/viewaccount/:user_id" element={<ViewAccount />} />
+        <Route path="/reviews" element={<Reviews />} />
     </Routes>
     <Footer />
     </>

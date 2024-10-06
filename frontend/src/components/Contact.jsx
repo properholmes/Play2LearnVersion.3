@@ -1,0 +1,115 @@
+import TextInput from './TextInput';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+function Contact() {
+    // declare useNavigate to navigate to user list after adding user
+    let navigate = useNavigate();
+
+    const [errors, setErrors] = useState([]);
+
+
+    useEffect(() => {
+        if (errors.success === 'done') {
+            setErrors([]);
+            navigate("/admin");
+        }
+    }, [errors]);
+
+    //create an empty and stateful user object
+    const [contact, setContact] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        message: '',
+        placeholder: ''
+    });
+
+
+    // create hnadleChange function to detect typing event on input field
+    // match the name of the user object key to the value user types in input field
+    const handleChange = (event) => {
+
+        const { name, value } = event.target;
+
+        setUser({
+            // spread operator takes user object in-place values and 
+            ...user,
+            // copy values from input field associated w/ the name of the field into the object values
+            [name]: value
+        })
+
+    };
+    // connect the handleSubmit function to the user.php file in order to facilitate data exchange using an api
+    const handleSubmit = async (event) => {
+
+        const apiURL = 'http://localhost:8888/phpreact/frontend/backend/contact.php';
+        event.preventDefault();
+
+
+        const response = await fetch(apiURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+        const data = await response.json();
+        setErrors(data);
+    }
+
+
+    return (
+        <>
+            <div className="card" style={{ 'width': '30rem' }}>
+                <div className="card-header">
+                    <div className="row">
+                        <div className="col-lg-6"><b>Register</b></div>
+                        <div className="col-lg-6">
+                            <Link to="/admin" className="btn btn-success btn-sm float-end">View All</Link>
+                        </div>
+                    </div>
+                </div>
+                <div className="card-body" >
+                    <div className="row">
+                        <div className="col-lg-2">&nbsp;</div>
+                        <div className="col-lg-8">
+                            <ul className='list-group'>
+                                {errors.length > 0 && errors.map((error, index) => (
+                                    <li className="list-group-item text-danger" key={index}>
+                                        {error}
+                                    </li>
+                                ))}
+                            </ul>
+                            <form method="POST" onSubmit={handleSubmit} >
+                                <div className="mb-3">
+                                    <TextInput name="first_name" type="text" placeholder="First Name" handleChange={handleChange} />
+                                </div>
+                                <div className="mb-3">
+                                    <TextInput name="last_name" type="text" placeholder="Last Name" handleChange={handleChange} />
+                                </div>
+                                <div className="mb-3">
+                                    <TextInput name="email" type="email" placeholder="Email Address" handleChange={handleChange} />
+                                </div>
+                                <div className="mb-3">
+                                    <label for="message">Your Message:</label>
+                                    <textarea id="message" name='message' rows="4" cols="50">
+                                        At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.
+                                    </textarea>
+                                </div>
+
+                                <div className="mb-3">
+                                    <input name="register" type="submit" className="btn btn-primary" value="Register" />
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+
+}
+
+export default Contact

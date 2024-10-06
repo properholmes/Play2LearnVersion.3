@@ -1,7 +1,7 @@
 import anagrams from "./anagramsArray.js"
-import SelectInput from "./SelectInput"
-import Directions from "./Directions"
-import Button from "./AnagramBtn"
+import SelectInput from "./SelectInput.jsx"
+import Directions from "./Directions.jsx"
+import Button from "./AnagramBtn.jsx"
 
 function GameSetup (props){
 
