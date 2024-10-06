@@ -13,6 +13,7 @@ import Login from './components/Login';
 import Mathfacts from './components/Mathfacts'
 import Register from './components/Register';
 import UsersList from './components/UsersList';
+import ViewAccount from './components/ViewAccount.jsx';
 import './anaApp.css'
 
 
@@ -79,6 +80,7 @@ function App() {
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/admin" element={<UsersList />} />
         <Route path="/edit/:user_id" element={<EditUser />} />
+        <Route path="/viewaccount/:user_id" element={<ViewAccount />} />
     </Routes>
     <Footer />
     </>

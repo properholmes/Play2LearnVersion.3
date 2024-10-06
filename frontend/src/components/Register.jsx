@@ -1,23 +1,36 @@
 import TextInput from './TextInput';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Register() {
-// declare useNavigate to navigate to user list after adding user
+    // declare useNavigate to navigate to user list after adding user
     let navigate = useNavigate();
-//creat an empty and stateful user object
+
+    const [errors, setErrors] = useState([]);
+
+
+    useEffect(() => {
+        if (errors.success === 'done') {
+          setErrors([]);
+          navigate("/admin");
+        }
+      }, [errors]);
+    //create an empty and stateful user object
     const [user, setUser] = useState({
         first_name: '',
         last_name: '',
         email: '',
-        username:'',
-        pass_phrase: '', 
+        username: '',
+        pass_phrase: '',
+        confirm_pass_phrase: '',
         is_admin: 0,
-        date_registered: '', 
+        date_registered: '',
         registration_confirmed: 0
     });
-// create hnadleChange function to detect typing event on input field
-// match the name of the user object key to the value user types in input field
+
+  
+    // create hnadleChange function to detect typing event on input field
+    // match the name of the user object key to the value user types in input field
     const handleChange = (event) => {
 
         const { name, value } = event.target;
@@ -30,27 +43,28 @@ function Register() {
         })
 
     };
-// connect the handleSubmit function to the user.php file in order to facilitate data exchange using an api
+    // connect the handleSubmit function to the user.php file in order to facilitate data exchange using an api
     const handleSubmit = async (event) => {
-        
+
         const apiURL = 'http://localhost:8888/phpreact/frontend/backend/users.php';
         event.preventDefault();
 
-        try{
-            const response = await fetch(apiURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(user)
-            })
-            await response.json();
-            navigate("/admin")
-        } catch (error){
-            console.error('Error fetching users:', error);
-        }
-        
+
+        const response = await fetch(apiURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+        const data = await response.json();
+        setErrors(data);
+        console.log(errors);
+        console.log(errors.length);
+        console.log(errors.length === 0);
+
     }
+
 
     return (
         <>
@@ -67,6 +81,13 @@ function Register() {
                     <div className="row">
                         <div className="col-lg-2">&nbsp;</div>
                         <div className="col-lg-8">
+                            <ul className='list-group'>
+                                {errors.length > 0 && errors.map((error, index) => (
+                                    <li className="list-group-item text-danger" key={index}>
+                                        {error}
+                                    </li>
+                                ))}
+                            </ul>
                             <form method="POST" onSubmit={handleSubmit} >
                                 <div className="mb-3">
                                     <TextInput name="first_name" type="text" placeholder="First Name" handleChange={handleChange} />
@@ -75,19 +96,19 @@ function Register() {
                                     <TextInput name="last_name" type="text" placeholder="Last Name" handleChange={handleChange} />
                                 </div>
                                 <div className="mb-3">
-                                <div className="mb-3">
-                                    <TextInput name="username" type="text" placeholder="Set Username" handleChange={handleChange} />
-                                </div>
+                                    <div className="mb-3">
+                                        <TextInput name="username" type="text" placeholder="Set Username" handleChange={handleChange} />
+                                    </div>
                                     <TextInput name="email" type="email" placeholder="Email Address" handleChange={handleChange} />
                                 </div>
                                 <div className="mb-3">
                                     <TextInput name="pass_phrase" type="password" placeholder="Password" handleChange={handleChange} />
                                 </div>
                                 <div className="mb-3">
-                                    <TextInput name="confirm_pass_phrase" type="password" placeholder="Confirm Password" />
+                                    <TextInput name="confirm_pass_phrase" type="password" placeholder="Confirm Password" handleChange={handleChange} />
                                 </div>
                                 <div className="mb-3">
-                                    <input type="submit" className="btn btn-primary" value="Register" />
+                                    <input name="register" type="submit" className="btn btn-primary" value="Register" />
                                 </div>
 
                             </form>
