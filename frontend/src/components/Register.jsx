@@ -15,6 +15,7 @@ function Register() {
           navigate("/admin");
         }
       }, [errors]);
+      
     //create an empty and stateful user object
     const [user, setUser] = useState({
         first_name: '',
@@ -59,10 +60,6 @@ function Register() {
         })
         const data = await response.json();
         setErrors(data);
-        console.log(errors);
-        console.log(errors.length);
-        console.log(errors.length === 0);
-
     }
 
 

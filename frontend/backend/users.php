@@ -87,13 +87,6 @@ if ($method === 'POST') {
         } else {
             echo json_encode($errors);
         }
-
-    
-
-    // $stmt->execute([$first_name, $last_name, $username ?? 'default_username', $email, $form_data->pass_phrase, 1]);
-    // echo json_encode(["success" => "done"]);
-
-   
 }
 
 if ($method === 'PUT') {
