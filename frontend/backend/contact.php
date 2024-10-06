@@ -15,28 +15,68 @@ $db = new PDO($dsn, $username, $password);
 
 
 if ($method === 'POST') {
-  // Prepare INSERT query and pass data directly to execute()
+  require_once 'mail-config.php';
+  // No insert into query and execute here - just getting file contents and sending in email 
   $form_data = json_decode(file_get_contents('php://input'));
-  $query = 'INSERT INTO reviews (user_id, review, featured) VALUES (?, ?, ?)';
-  $stmt = $db->prepare($query);
+
   
-  //trimming data recieved from form
-  $review = trim($form_data->review ?? '');
+  //trimming data received from form
+  $first_name = trim($form_data->first_name ?? '');
+  $last_name = trim($form_data->last_name ?? '');
+  $email = trim($form_data->email ?? '');
+  $message = trim($form_data->message ?? '');
 
   //create empty arrays for errors handle error validation
   
-      $errors = [];
+    $errors = [];
 
-      if(!$review) {
-          $errors[] = 'Review is required';
-      }
+    if(!$first_name) {
+        $errors[] = 'First name required.';
+    }
+
+    if(!$last_name){
+        $errors[] = 'Last name required.';
+    }
+
+    if(!$message) {
+        $errors[] = 'Your message is required.';
+    }
+
+    if(!$email) {
+        $errors[] = 'Email is required.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'Email is not valid';
+    }
  
-
+      // if no errors send email 
       if(empty($errors)) {
-          $stmt->execute([$form_data->user_id, $form_data->review, 1]);
           echo json_encode(["success" => "done"]);
+          $to = $email;
+          $toName = $first_name . ' ' . $last_name;
+          $subject = 'Contact Form Submission';
+          $html = "<p>Thanks for taking the time to contact us! We <strong>will</strong> take note of what you wrote.</p>
+                  <p>Name: $toName</p>
+                  <p>Email: " . $email . "</p>
+                  <h3>Your Message:". $message ."</h3>";
+          $text = "Thanks for taking the time to contact us! We will take note of what you wrote.
+                  * Name: $toName
+                  * Email: " . $email . "
+                  * Here is the message you sent: " ." " . $message;
+                 
+          // Pass true to createMailer() to enable debugMode
+          $mail = createMailer();
+          $mail->addAddress($to, $toName);
+          // Uncomment this and add your email to bcc yourself
+          $mail->addBcc('manavg2018@gmail.com');
+          $mail->Subject = $subject;
+          $mail->Body = $html;
+          $mail->AltBody = $text;
+      
+          $mail->send();
+        
+
       } else {
-          echo json_encode($errors);
+        echo json_encode($errors);
       }
 }
   ?>

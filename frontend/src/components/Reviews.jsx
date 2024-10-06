@@ -100,8 +100,8 @@ function Reviews() {
 
                                 <div className="mb-3">
                                     <div className="mb-3">
-                                        <label htmlFor="review">Your Review:</label>
-                                        <textarea id="review" name='review' rows="4" cols="40" onChange={handleChange}>
+                                        <label htmlFor="review" className="form-label">Your Review:</label>
+                                        <textarea id="review" name='review' className="form-control" rows="4" cols="40" onChange={handleChange}>
 
                                         </textarea>
                                     </div>
