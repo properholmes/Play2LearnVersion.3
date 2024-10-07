@@ -15,8 +15,6 @@ function Register() {
         }
       }, [errors]);
 
-      console.log(errors);
-      
     //create an empty and stateful user object
     const [user, setUser] = useState({
         first_name: '',
@@ -60,7 +58,6 @@ function Register() {
             body: JSON.stringify(user)
         })
         const data = await response.json();
-        console.log(data);
         setErrors(data);
     }
 

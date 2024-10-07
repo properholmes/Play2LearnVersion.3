@@ -189,7 +189,7 @@ if ($method === 'POST') {
 
           // Respond with success message or errors
         if (empty($errors)) {
-            $message = "We have sent you an email with instructions. Check your email";
+            $message = "Successfully registered! We have sent you an email with instructions. Please check your email.";
             echo json_encode(["success" => "done", "message" => $message]);
         } else {
             echo json_encode($errors);
