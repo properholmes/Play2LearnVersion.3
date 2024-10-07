@@ -1,5 +1,5 @@
 <?php
-ini_set('display_errors', 1);
+// ini_set('display_errors', 1);
 require_once 'utilities.php';
 require_once 'mail-config.php';
 
@@ -168,7 +168,7 @@ if ($method === 'POST') {
               visit $href to confirm.";
     
             try {
-              // Pass true to createMailer() to enable debugMode
+              // Pass in true to createMailer() to enable debugMode
               $mail = createMailer();
               $mail->addAddress($to, $toName);
               $mail->addBcc('lvartani26@gmail.com');
@@ -190,7 +190,7 @@ if ($method === 'POST') {
           // Respond with success message or errors
         if (empty($errors)) {
             $message = "We have sent you an email with instructions. Check your email";
-            echo json_encode($message);
+            echo json_encode(["success" => "done", "message" => $message]);
         } else {
             echo json_encode($errors);
         }

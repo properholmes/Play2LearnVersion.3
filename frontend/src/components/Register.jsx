@@ -11,10 +11,11 @@ function Register() {
 
     useEffect(() => {
         if (errors.success === 'done') {
-          setErrors([]);
-          navigate("/admin");
+          navigate("/register");
         }
       }, [errors]);
+
+      console.log(errors);
       
     //create an empty and stateful user object
     const [user, setUser] = useState({
@@ -59,6 +60,7 @@ function Register() {
             body: JSON.stringify(user)
         })
         const data = await response.json();
+        console.log(data);
         setErrors(data);
     }
 
@@ -68,9 +70,9 @@ function Register() {
             <div className="card" style={{ 'width': '30rem' }}>
                 <div className="card-header">
                     <div className="row">
-                        <div className="col-lg-6"><b>Register</b></div>
-                        <div className="col-lg-6">
-                            <Link to="/admin" className="btn btn-success btn-sm float-end">View All</Link>
+                        <div className="col-md-3"><b>Register</b></div>
+                        <div className="col-lg-9">
+                            <Link to="/login" className="btn btn-outline-primary btn-md float-end">Registered already? Login</Link>
                         </div>
                     </div>
                 </div>
@@ -79,6 +81,9 @@ function Register() {
                         <div className="col-lg-2">&nbsp;</div>
                         <div className="col-lg-8">
                             <ul className='list-group'>
+                                {errors.success ?<li className="list-group-item text-success">
+                                        {errors.message}
+                                    </li> : ''   }
                                 {errors.length > 0 && errors.map((error, index) => (
                                     <li className="list-group-item text-danger" key={index}>
                                         {error}
