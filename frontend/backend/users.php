@@ -1,5 +1,7 @@
 <?php
 ini_set('display_errors', 1);
+require_once 'utilities.php';
+require_once 'mail-config.php';
 
 header("Access-Control-Allow-Origin:* ");
 header("Access-Control-Allow-Headers:* ");
@@ -39,10 +41,9 @@ if ($method === 'GET') {
 
 if ($method === 'POST') {
     // Prepare INSERT query and pass data directly to execute()
-    $form_data = json_decode(file_get_contents('php://input'));
-    $query = 'INSERT INTO users (first_name, last_name, username, email, pass_phrase, registration_confirmed) VALUES (?, ?, ?, ?, ?, ?)';
-    $stmt = $db->prepare($query);
     
+    $form_data = json_decode(file_get_contents('php://input'));
+   
     //trimming data recieved from form
     $first_name = trim($form_data->first_name ?? '');
     $last_name = trim($form_data->last_name ?? '');
@@ -79,15 +80,121 @@ if ($method === 'POST') {
             $errors[] = 'Passwords do not match.';
         }
 
-       
+        $userCheck = "SELECT user_id
+                    FROM users
+                    WHERE username = ?";
 
-        if(empty($errors)) {
-            $stmt->execute([$form_data->first_name, $form_data->last_name, $form_data->username ?? 'default_username', $form_data->email, $form_data->pass_phrase, 1]);
-            echo json_encode(["success" => "done"]);
+        try {
+            $stmtUsername = $db->prepare($userCheck);
+            $stmtUsername->execute([$username]);
+
+            if ($stmtUsername->fetch()) {
+                $errors[] = 'That username is already taken. Please try a different one.';
+              }
+
+        } catch(PDOException $e) {
+            logError($e);
+            $errors[] = 'Oops! Our bad. We cannot register you right now.';
+          }
+
+       $emailCheck =  "SELECT user_id
+                    FROM users
+                    WHERE email = ?";
+        try {
+            $stmtEmail = $db->prepare($emailCheck);
+            $stmtEmail->execute([ $email ]); 
+          
+            if ($stmtEmail->fetch()) {
+              $errors[] = 'We recognize that email.';
+            }
+          } catch (PDOException $e) {
+            logError($e);
+            $errors[] = 'Oops! Our bad. We cannot register you right now.';
+          }
+                
+         
+          
+          if (empty($errors)) {
+            // Insert user
+            $hashedPhrase = password_hash($form_data->pass_phrase, PASSWORD_DEFAULT);
+            $token = generateToken();
+    
+            $qInserts = "INSERT INTO users
+                (first_name, last_name, email, username, pass_phrase)
+                VALUES (:first_name, :last_name, :email,
+                    :username, '$hashedPhrase');
+                    
+                INSERT INTO tokens
+                (token, user_id, token_expires)
+                VALUES (:token, LAST_INSERT_ID(), 
+                    DATE_ADD(now(), INTERVAL 1 HOUR));";
+    
+            try {
+                $stmtInserts = $db->prepare($qInserts);
+                $stmtInserts->bindParam(':first_name', $first_name);
+                $stmtInserts->bindParam(':last_name', $last_name);
+                $stmtInserts->bindParam(':email', $email);
+                $stmtInserts->bindParam(':username', $username);
+                $stmtInserts->bindParam(':token', $token);
+    
+                if (!$stmtInserts->execute()) {
+                    logError($stmtInserts->errorInfo()[2]);
+                    $errors[] = 'Registration failed. Please try again.';
+                }
+            } catch (PDOException $e) {
+                logError($e);
+                $errors[] = 'Registration failed. Please try again.';
+            }
+
+        }
+
+
+        if (!$errors) { // If there are still no errors
+            // Send confirmation email
+            $qs = http_build_query(['token' => $token]);
+            $pathToConfirm = getFullPath('registration-confirm.php');
+            $href = $pathToConfirm . '?' . $qs;
+    
+            $to = $email;
+            $toName = $first_name . ' ' . $last_name;
+            $subject = 'Confirm Registration';
+    
+            $html = "<p>Someone registered you for Play2Learn.com. If it
+              wasn't you, you can ignore this email. If it was,
+            <a href='$href'>click here</a> to confirm.</p>";
+    
+            $text = "Someone registered you for phppoetry.com. If it
+              wasn't you, you can ignore this email. If it was,
+              visit $href to confirm.";
+    
+            try {
+              // Pass true to createMailer() to enable debugMode
+              $mail = createMailer();
+              $mail->addAddress($to, $toName);
+              $mail->addBcc('lvartani26@gmail.com');
+              $mail->Subject = $subject;
+              $mail->Body = $html;
+              $mail->AltBody = $text;
+          
+              $mail->send();
+            } catch (Exception $e) {
+                $errors[] = "We are sorry. We could not register you at this time.";
+              logError($e);
+            }
+    
+            if (!$registrationMailSent = $mail->send()) {
+                $errors[] = "We are sorry. We could not register you at this time.";
+            }
+          }
+
+          // Respond with success message or errors
+        if (empty($errors)) {
+            $message = "We have sent you an email with instructions. Check your email";
+            echo json_encode($message);
         } else {
             echo json_encode($errors);
         }
-}
+    }
 
 if ($method === 'PUT') {
     // Prepare UPDATE query and pass data directly to execute()
