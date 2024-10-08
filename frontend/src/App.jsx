@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import {Routes, Route} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import {Routes, Route, useNavigate} from 'react-router-dom';
 import About from './components/About.jsx';
 import anagrams from "./components/anagramhunt/anagramsArray.js";
 import Contact from "./components/Contact.jsx";
@@ -31,6 +31,17 @@ function App() {
       return 0;
   }
 
+  function Redirect() {
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      navigate('/');
+    }, []);
+  
+    return null; // Render nothing
+  }
+  
+
   // set the initial wordlength to 5 
   const [wordLength, setWordLength] = useState('5');
   // set the first block of anagram words to a random block of 5 characters
@@ -44,12 +55,13 @@ function App() {
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const[blockCorrect, setBlockCorrect]= useState([]);
 
-  const[session, setSession] = useState('');
-  console.log(session);
+  const [sessionId, setSessionId] = useState(sessionStorage.getItem('sessionId'));
+
+
 
   return (
     <>
-    <Header session={session}/>
+    <Header session={sessionId}/>
     <Routes>
     <Route exact path="/" element={<Homepage />} />
     <Route exact path="/about" element={<About />} />
@@ -70,24 +82,26 @@ function App() {
           correctAnswers={correctAnswers}
           setCorrectAnswers={setCorrectAnswers}
           blockCorrect={blockCorrect}
-          setBlockCorrect={setBlockCorrect}/>
+          setBlockCorrect={setBlockCorrect} />
         }>
         </Route>
         <Route exact path="/score" element={
           <GameScore 
           score={score}
           correctAnswers={correctAnswers}
-          blockCorrect={blockCorrect}/>
+          blockCorrect={blockCorrect}
+          sessionId={sessionId} />
         }>          
         </Route>
-        <Route exact path="/mathfacts" element={<Mathfacts />} />
-        <Route exact path="/login" element={<Login  setSession={setSession}/>} />
+        <Route exact path="/mathfacts" element={<Mathfacts sessionId={sessionId} />} />
+        <Route exact path="/login" element={<Login setSessionId={setSessionId}/>} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/admin" element={<UsersList />} />
         <Route exact path="/contact" element={<Contact />} />
-        <Route path="/edit/:user_id" element={<EditUser />} />
-        <Route path="/viewaccount/:user_id" element={<ViewAccount />} />
+        <Route path="/edit/:user_id" element={<EditUser sessionId={sessionId} />} />
+        <Route path="/viewaccount/:user_id" element={<ViewAccount sessionId={sessionId} />} />
         <Route path="/reviews/:user_id" element={<Reviews />} />
+        <Route path="*" element={<Redirect to="/" replace />} />
     </Routes>
     <Footer />
     </>

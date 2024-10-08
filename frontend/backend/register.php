@@ -10,6 +10,7 @@ require_once 'mail-config.php';
 
 
 
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 $dsn = 'mysql:host=localhost;dbname=play2learn';

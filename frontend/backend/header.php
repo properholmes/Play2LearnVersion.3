@@ -10,7 +10,7 @@ header("Access-Control-Allow-Methods:* ");
 require_once 'utilities.php';
 require_once 'config.php';
 
-session_start();
+
 
 
  

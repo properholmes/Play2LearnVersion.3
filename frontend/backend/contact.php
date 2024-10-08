@@ -7,6 +7,8 @@ header("Access-Control-Allow-Origin:* ");
 header("Access-Control-Allow-Headers:* ");
 header("Access-Control-Allow-Methods:* ");
 
+require 'header.php';
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 $dsn = 'mysql:host=localhost;dbname=play2learn';
