@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Badge } from 'react-bootstrap';
 
 function ViewAccount() {
 
@@ -38,22 +39,34 @@ function ViewAccount() {
                     <div className="col-md-9"><h5>{user.first_name}'s Account Details</h5></div>
                     <div className="col-md-3">
                         <Link to={`/edit/${user.user_id}`} className="btn btn-warning btn-sm">Edit</Link>
+                       
                     </div>
                 </div>
             </div>
             <div className="card-body">
                 <div className="row">
-                    <div className="col-md-4">&nbsp;</div>
-                    <div className="col-md-4">
+                    <div className="col-md-6">
+                   
+                    </div>
+                    <div className="col-md-12">
+
                         <div className="mb-3">
-                            <h6>First Name: `{user.first_name}`</h6>
+                            <p><strong>First Name: </strong> {user.first_name}</p>
                         </div>
                         <div className="mb-3">
-                            <h6>Last Name: '{user.last_name}'</h6>
+                            <p><strong>Last Name: </strong> {user.last_name}</p>
                         </div>
                         <div className="mb-3">
-                            <h6>Email Address '{user.email}'</h6>
+                            <p><strong>Email Address:</strong> {user.email}</p>
                         </div>
+                        <div className="mb-3">
+                        {user.is_admin ? 
+                        <> <Badge variant="light">You are an admin</Badge> <br/> <Link to={`/admin/${user.user_id}`} className="btn btn-warning btn-md mt-3">View all users</Link></>
+                        : <Badge variant="warning">You are not an admin</Badge> }
+                        </div>
+
+
+                      
                     </div>
                 </div>
             </div>

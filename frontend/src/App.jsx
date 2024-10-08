@@ -96,7 +96,7 @@ function App() {
         <Route exact path="/mathfacts" element={<Mathfacts sessionId={sessionId} />} />
         <Route exact path="/login" element={<Login setSessionId={setSessionId}/>} />
         <Route exact path="/register" element={<Register />} />
-        <Route exact path="/admin" element={<UsersList />} />
+        <Route exact path="/admin/:user_id" element={<UsersList />} />
         <Route exact path="/contact" element={<Contact />} />
         <Route path="/edit/:user_id" element={<EditUser sessionId={sessionId} />} />
         <Route path="/viewaccount/:user_id" element={<ViewAccount sessionId={sessionId} />} />

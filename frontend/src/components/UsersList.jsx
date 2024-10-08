@@ -6,9 +6,6 @@ import { Link, useNavigate } from 'react-router-dom';
 function UsersList() {
     let navigate = useNavigate();
     const [users, setUsers] = useState([]);
-
-    console.log(users);
-  
     useEffect(() => {
       const apiURL = 'http://localhost:8888/phpreact/frontend/backend/users.php'; //location of user api logic
       async function fetchUsers() {

@@ -20,12 +20,12 @@ function EditUser() {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-
         setUser({
             ...user,
-            [name]: value
+            [name]: name === 'is_admin' ? event.target.checked : value,
         });
     };
+
 
     const apiURL = `http://localhost:8888/phpreact/frontend/backend/users.php?id=${user_id}`
 
@@ -38,10 +38,10 @@ function EditUser() {
     }
 
 
-    const handleSubmit = async(event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-    
-        try{
+
+        try {
             fetch(`http://localhost:8888/phpreact/frontend/backend/register.php?id=${user_id}`, {
                 method: 'PUT',
                 headers: {
@@ -52,11 +52,11 @@ function EditUser() {
             const response = await fetch(apiURL);
             const data = await response.json();
             navigate(`/viewaccount/${user_id}`);
-        } catch(error) {
+        } catch (error) {
             console.error('Error updating user:', error);
         }
-        
-        
+
+
     };
 
     useEffect(() => {
@@ -89,6 +89,24 @@ function EditUser() {
                                 <label>Username</label>
                                 <input type="text" name="username" className="form-control" value={user.username} onChange={handleChange} />
                             </div>
+                            <div className="mb-3">
+                                <div className="form-check form-switch">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        role="switch"
+                                        id="flexSwitchCheckChecked"
+
+                                        checked={user.is_admin}
+
+                                        onChange={handleChange}
+                                    />
+                                    <label className="form-check-label" htmlFor="flexSwitchCheckChecked">
+                                        {user.is_admin ? "Admin" : "Not Admin"}
+                                    </label>
+                                </div>
+                            </div>
+
                             <div className="mb-3">
                                 <label>Email</label>
                                 <input type="email" name="email" className="form-control" value={user.email} onChange={handleChange} />

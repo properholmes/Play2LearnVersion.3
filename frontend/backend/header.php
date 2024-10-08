@@ -10,9 +10,6 @@ header("Access-Control-Allow-Methods:* ");
 require_once 'utilities.php';
 require_once 'config.php';
 
-
-
-
  
 
 $method = $_SERVER['REQUEST_METHOD'];

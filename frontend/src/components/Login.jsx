@@ -29,7 +29,7 @@ function Login(props) {
            // Store session ID in sessionStorage
             props.setSessionId(errors.session);
             sessionStorage.setItem('sessionId', errors.session);
-            navigate("/login");
+            navigate("/");
         }
     }, [errors]);
 
