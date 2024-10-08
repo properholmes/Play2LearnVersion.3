@@ -2,18 +2,17 @@ import React, {useState, useEffect} from 'react'
 
 function Header(props) {
 
-  const [userId, setUserId] = useState('');
-
   useEffect(() => {
     async function fetchUser() {
     
         const response = await fetch('http://localhost:8888/phpreact/frontend/backend/header.php');
         const data = await response.json();
-        setUserId(data.userID);
       
     }
     fetchUser();
   }, []);
+
+ const sessionId = parseInt(props.sessionId);
   return (
     <>
       <header>
@@ -42,7 +41,7 @@ function Header(props) {
                 </div>
               </li>
               <li className="nav-item">
-                {!props.session ? <a className="nav-link" href="/login">Login</a> : <a className="nav-link" href={`/viewaccount/${props.session}`}>My Account</a>}
+                {!sessionId ? <a className="nav-link" href="/login">Login</a> : <a className="nav-link" href={`/viewaccount/${sessionId}`}>My Account</a>}
               </li>
             </ul>
       

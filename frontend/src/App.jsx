@@ -61,7 +61,7 @@ function App() {
 
   return (
     <>
-    <Header session={sessionId}/>
+    <Header sessionId={sessionId}/>
     <Routes>
     <Route exact path="/" element={<Homepage />} />
     <Route exact path="/about" element={<About />} />
@@ -103,7 +103,7 @@ function App() {
         <Route path="/reviews/:user_id" element={<Reviews />} />
         <Route path="*" element={<Redirect to="/" replace />} />
     </Routes>
-    <Footer />
+    <Footer sessionId={sessionId} setSessionId={setSessionId} />
     </>
   )
   

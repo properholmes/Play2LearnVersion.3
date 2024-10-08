@@ -16,10 +16,6 @@ function Login(props) {
         registration_confirmed: 0
     });
 
-    const[userId, setUserId] = useState('');
-
-
-
     // if no errors logging in, navigate to the homepage
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
@@ -30,11 +26,9 @@ function Login(props) {
           }
         
         if (errors.success === 'done') {
-           props.setSession(errors.session)
-            // Store session ID in sessionStorage
+           // Store session ID in sessionStorage
             props.setSessionId(errors.session);
             sessionStorage.setItem('sessionId', errors.session);
-            setUserId(errors.userid)
             navigate("/login");
         }
     }, [errors]);
