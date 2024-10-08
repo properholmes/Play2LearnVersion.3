@@ -64,10 +64,10 @@ function Register() {
 
     return (
         <>
-            <div className="card" style={{ 'width': '30rem' }}>
+            <div className="card" style={{  }}>
                 <div className="card-header">
                     <div className="row">
-                        <div className="col-md-3"><b>Register</b></div>
+                        <div className="col-md-3"><b><h5>Register</h5></b></div>
                         <div className="col-lg-9">
                             <Link to="/login" className="btn btn-outline-primary btn-md float-end">Registered already? Login</Link>
                         </div>

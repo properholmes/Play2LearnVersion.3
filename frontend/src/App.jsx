@@ -44,9 +44,12 @@ function App() {
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const[blockCorrect, setBlockCorrect]= useState([]);
 
+  const[session, setSession] = useState('');
+  console.log(session);
+
   return (
     <>
-    <Header />
+    <Header session={session}/>
     <Routes>
     <Route exact path="/" element={<Homepage />} />
     <Route exact path="/about" element={<About />} />
@@ -78,7 +81,7 @@ function App() {
         }>          
         </Route>
         <Route exact path="/mathfacts" element={<Mathfacts />} />
-        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/login" element={<Login  setSession={setSession}/>} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/admin" element={<UsersList />} />
         <Route exact path="/contact" element={<Contact />} />
