@@ -1,6 +1,4 @@
 <?php
-// Start output buffering
-ob_start();
 // ini_set('display_errors', 1);
 
 header("Access-Control-Allow-Origin:* ");
@@ -83,7 +81,6 @@ if ($method === 'POST') {
         echo json_encode($errors);
       }
 }
-// Flush the buffered output
-ob_end_flush();
+
 ?>
   

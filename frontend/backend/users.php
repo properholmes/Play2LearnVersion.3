@@ -1,6 +1,4 @@
 <?php
-// Start output buffering
-ob_start();
 header("Access-Control-Allow-Origin:* ");
 header("Access-Control-Allow-Headers:* ");
 header("Access-Control-Allow-Methods:* ");
@@ -42,6 +40,4 @@ if ($method === 'GET') {
     }
 }
 
-// Flush the buffered output
-ob_end_flush();
 ?>
