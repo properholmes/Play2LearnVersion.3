@@ -46,7 +46,7 @@ function Register() {
     // connect the handleSubmit function to the user.php file in order to facilitate data exchange using an api
     const handleSubmit = async (event) => {
 
-        const apiURL = 'http://localhost:8888/phpreact/frontend/backend/users.php';
+        const apiURL = 'http://localhost:8888/phpreact/frontend/backend/register.php';
         event.preventDefault();
 
 

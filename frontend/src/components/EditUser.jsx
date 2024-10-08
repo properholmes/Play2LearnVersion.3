@@ -42,7 +42,7 @@ function EditUser() {
         event.preventDefault();
     
         try{
-            fetch(`http://localhost:8888/phpreact/frontend/backend/users.php?id=${user_id}`, {
+            fetch(`http://localhost:8888/phpreact/frontend/backend/register.php?id=${user_id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

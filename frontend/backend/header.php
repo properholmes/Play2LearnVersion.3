@@ -1,13 +1,17 @@
 <?php
+// Start output buffering
+ob_start();
+header("Access-Control-Allow-Origin:* ");
+header("Access-Control-Allow-Headers:* ");
+header("Access-Control-Allow-Methods:* ");
 // ini_set('display_errors', 1);
-session_start();
+
 
 require_once 'utilities.php';
 require_once 'config.php';
 
-header("Access-Control-Allow-Origin:* ");
-header("Access-Control-Allow-Headers:* ");
-header("Access-Control-Allow-Methods:* ");
+session_start();
+
 
  
 
@@ -44,3 +48,8 @@ if ($method === 'GET') {
 
     echo json_encode(["userID" =>  $currentUserId, "session_id" =>  session_id()]);
 }
+
+// Flush the buffered output
+ob_end_flush();
+
+?>

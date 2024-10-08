@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import TextInput from "./TextInput"
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -8,8 +8,8 @@ function Login(props) {
 
     const [errors, setErrors] = useState([]);
 
-     //create an empty and stateful user object
-     const [user, setUser] = useState({
+    //create an empty and stateful user object
+    const [user, setUser] = useState({
         username: '',
         pass_phrase: '',
         is_admin: 0,
@@ -20,13 +20,20 @@ function Login(props) {
 
     // if no errors logging in, nevigate to the homepage
     useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const justRegistered = queryParams.get('just-registered');
+        if (justRegistered) {
+            // Handle successful registration (e.g., log in automatically, show message)
+            console.log('Registration successful!');
+          }
+        
         if (errors.success === 'done') {
-          props.setSession(errors.session)
-          navigate("/");
+            props.setSession(errors.session)
+            navigate("/");
         }
-      }, [errors]);
+    }, [errors]);
 
-  
+
     // create hnadleChange function to detect typing event on input field
     // match the name of the user object key to the value user types in input field
     const handleChange = (event) => {
@@ -42,8 +49,8 @@ function Login(props) {
 
     };
 
-     // connect the handleSubmit function to the login.php file in order to facilitate data exchange using an api
-     const handleSubmit = async (event) => {
+    // connect the handleSubmit function to the login.php file in order to facilitate data exchange using an api
+    const handleSubmit = async (event) => {
 
         const apiURL = 'http://localhost:8888/phpreact/frontend/backend/login.php';
         event.preventDefault();
@@ -63,7 +70,7 @@ function Login(props) {
 
     return (
         <>
-            <div className="card" style={{  }}>
+            <div className="card" style={{}}>
                 <div className="card-header">
                     <div className="row">
                         <div className="col-md-3"><b><h5>Login</h5></b></div>
@@ -96,10 +103,10 @@ function Login(props) {
                                 </div>
 
                                 <div className="form-check mb-3">
-                                <input className="form-check-input" type="checkbox" name="rememberme" id="rememberme" />
-                                <label className="form-check-label" htmlFor="rememberme">
-                                    Remember Me
-                                </label>
+                                    <input className="form-check-input" type="checkbox" name="rememberme" id="rememberme" />
+                                    <label className="form-check-label" htmlFor="rememberme">
+                                        Remember Me
+                                    </label>
                                 </div>
 
                                 <div className="mb-3">

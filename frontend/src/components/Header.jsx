@@ -10,11 +10,12 @@ function Header(props) {
         const response = await fetch('http://localhost:8888/phpreact/frontend/backend/header.php');
         const data = await response.json();
         setUserId(data.userID);
+        console.log(data);
       
     }
     fetchUser();
   }, []);
-
+console.log(userId);
   return (
     <>
       <header>

@@ -1,13 +1,15 @@
 <?php
+// Start output buffering
+ob_start();
 require_once 'users.php';
   if (!isset($_GET['token'])) {
 
     // How did you get here?
-    // header("Location: index.php");
+    // header("Location: login.php");
   }
 
   $pageTitle = 'You have successfully registered!';
-//   require 'includes/header.php';
+ require 'header.php';
 //   logout(); // In case a different user has logged in
 
   $token = $_GET['token'];
@@ -29,11 +31,13 @@ require_once 'users.php';
       logError($stmtUpdate->errorInfo()[2], true);
     } elseif ($stmtUpdate->rowCount()) {
       // Redirect user to login page
-      header("Location: login.php?just-registered=1");
+      header("Location: http://localhost:5173/login?just_registered=1");
     } // Else no rows were updated. Continue to error message.
   } catch (PDOException $e) {
     logError($e);
   }
+// Flush the buffered output
+ob_end_flush();
 ?>
 <!-- Won't get her unless something went wrong -->
 <main class="narrow">
