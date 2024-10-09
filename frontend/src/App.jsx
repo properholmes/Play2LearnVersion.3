@@ -88,7 +88,6 @@ function App() {
         <Route exact path="/score" element={
           <GameScore 
           score={score}
-          wordLength={wordLength}
           correctAnswers={correctAnswers}
           blockCorrect={blockCorrect}
           sessionId={sessionId} />

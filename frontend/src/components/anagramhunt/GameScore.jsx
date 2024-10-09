@@ -9,17 +9,7 @@ function reset(props) {
 }
 
 
-
 function GameScore(props) {
-
-    const [tracking, setTracking] = useState({
-        user_id: props.sessionId,
-        score: props.score,
-        max_number: props.wordLength,
-        operation: "Typing"
-    })
-
-    const [errors, setErrors] = useState('');
 
     const [scoreMessage, setScoreMessage] = useState('');
     const correctList = props.correctAnswers;
@@ -28,29 +18,12 @@ function GameScore(props) {
     ));
 
     useEffect(() => {
-        if (props.score > 1) {
+        if (props.score > 2) {
             setScoreMessage('Great job!');
         } else {
             setScoreMessage('Better luck next time :(');
         }
-
-        async function fetchData() {
-            const apiURL = 'http://localhost:8888/phpreact/frontend/backend/tracking.php';
-
-
-            const response = await fetch(apiURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(tracking)
-            })
-            const data = await response.json();
-            setErrors(data);
-        }
-        fetchData();
-
-    }, []);
+    }, [props.score]);
 
     return (
         <div id="ana-finalview" className="d-grid gap-5">
@@ -59,16 +32,6 @@ function GameScore(props) {
             <h5>Your correct answers:</h5>
             <ul className="list-group">
                 {correctOptions}
-            </ul>
-            <ul className='list-group'>
-                {errors.success ? <li className="list-group-item text-success">
-                    {errors.message}
-                </li> : ''}
-                {errors.length > 0 && errors.map((error, index) => (
-                    <li className="list-group-item text-danger" key={index}>
-                        {error}
-                    </li>
-                ))}
             </ul>
             <Link to="/play" onClick={reset} className="btn btn-primary">Play Again!</Link>
             <Link to="/anagramhunt" onClick={reset} className="btn btn-primary">Back to Settings</Link>
