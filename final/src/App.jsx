@@ -106,7 +106,7 @@ function App() {
         <Route exact path="/contact" element={<Contact />} />
         <Route path="/edit/:user_id" element={<EditUser sessionId={sessionId} />} />
         <Route path="/viewaccount/:user_id" element={<ViewAccount sessionId={sessionId} />} />
-        <Route path="/reviews" element={<Reviews />} />
+        <Route path="/reviews" element={<Reviews sessionId={sessionId} />} />
         <Route path="/leaderboard" element={<Leaderboard/>} />
         <Route path="*" element={<Redirect to="/" replace />} />
     </Routes>

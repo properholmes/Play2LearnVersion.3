@@ -3,11 +3,11 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Carousel from "react-bootstrap/Carousel";
 
 
-function Reviews() {
+function Reviews(props) {
     // declare useNavigate to navigate to user list after adding user
     let navigate = useNavigate();
 
-    const { user_id } = useParams();
+    const user_id  = props.sessionId;
 
     const [errors, setErrors] = useState([]);
 
@@ -71,6 +71,7 @@ function Reviews() {
             body: JSON.stringify(review)
         })
         const data = await response.json();
+        navigate("./reviews")
         setErrors(data);
     }
 
