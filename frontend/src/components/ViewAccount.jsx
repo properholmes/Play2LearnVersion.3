@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Badge } from 'react-bootstrap';
 
-function ViewAccount() {
+function ViewAccount(props) {
 
     let navigate = useNavigate();
     const { user_id } = useParams();

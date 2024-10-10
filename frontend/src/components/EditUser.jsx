@@ -4,39 +4,37 @@ import { useNavigate, useParams } from 'react-router-dom';
 function EditUser() {
     const { user_id } = useParams();
 
-    let navigate = useNavigate();
-
+    // Initialize user state with is_admin based on fetched data
     const [user, setUser] = useState({
         first_name: '',
         last_name: '',
         email: '',
         username: '',
         pass_phrase: '',
-        is_admin: 0,
+        is_admin: 0, // Assuming the backend returns numerical value for admin
         date_registered: '',
         registration_confirmed: 0
     });
 
+    let navigate = useNavigate();
 
     const handleChange = (event) => {
-        const { name, value } = event.target;
+        const { name, value, checked } = event.target; // Use checked for checkboxes
+
         setUser({
             ...user,
-            [name]: name === 'is_admin' ? event.target.checked : value,
+            [name]: name === 'is_admin' ? checked : value, // Update based on type
         });
     };
 
 
-    const apiURL = `http://localhost:8888/phpreact/frontend/backend/users.php?id=${user_id}`
+    const apiURL = `http://localhost:8888/phpreact/frontend/backend/users.php?id=${user_id}`;
 
     const fetchUserData = async () => {
-
         const response = await fetch(apiURL);
         const data = await response.json();
         setUser(data);
-
-    }
-
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -48,15 +46,13 @@ function EditUser() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(user)
-            })
+            });
             const response = await fetch(apiURL);
             const data = await response.json();
             navigate(`/viewaccount/${user_id}`);
         } catch (error) {
             console.error('Error updating user:', error);
         }
-
-
     };
 
     useEffect(() => {
@@ -98,8 +94,8 @@ function EditUser() {
                                         id="flexSwitchCheckChecked"
 
                                         checked={user.is_admin}
-
-                                        onChange={handleChange}
+                                        // Use user.is_admin for state
+                                        onChange={handleChange} // Update state on change
                                     />
                                     <label className="form-check-label" htmlFor="flexSwitchCheckChecked">
                                         {user.is_admin ? "Admin" : "Not Admin"}
@@ -114,6 +110,11 @@ function EditUser() {
                             <div className="mb-3">
                                 <label>Password</label>
                                 <input type="password" name="pass_phrase" className="form-control" value={user.pass_phrase} onChange={handleChange} />
+                            </div>
+
+                            <div className="mb-3">
+                                <label>Confirm</label>
+                                <input type="password" name="confirm_pass_phrase" className="form-control" onChange={handleChange} />
                             </div>
                             <div className="mb-3">
                                 <input type="submit" className="btn btn-primary" value="Save Changes" />
