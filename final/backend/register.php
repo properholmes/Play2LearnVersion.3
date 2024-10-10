@@ -150,7 +150,7 @@ if ($method === 'POST') {
               // Pass in true to createMailer() to enable debugMode
               $mail = createMailer();
               $mail->addAddress($to, $toName);
-              $mail->addBcc('lvartani26@gmail.com');
+            //   $mail->addBcc('');
               $mail->Subject = $subject;
               $mail->Body = $html;
               $mail->AltBody = $text;
