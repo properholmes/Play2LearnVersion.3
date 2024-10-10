@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-function EditUser() {
+function ResetPassword() {
     const { user_id } = useParams();
 
     // Initialize user state with is_admin based on fetched data
@@ -66,7 +66,7 @@ function EditUser() {
         <div className="card" style={{ 'width': '30rem' }}>
             <div className="card-header">
                 <div className="row">
-                    <div className="col-md-12">Edit User {user_id}</div>
+                    <div className="col-md-12">Reset Password</div>
                     <div className="col-md-6">
                     </div>
                 </div>
@@ -95,10 +95,6 @@ function EditUser() {
                                 <label>Last Name</label>
                                 <input type="text" name="last_name" className="form-control" value={user.last_name} onChange={handleChange} />
                             </div>
-                            <div className="mb-3">
-                                <label>Username</label>
-                                <input type="text" name="username" className="form-control" value={user.username} onChange={handleChange} />
-                            </div>
 
 
                             <div className="mb-3">
@@ -114,27 +110,7 @@ function EditUser() {
                                 <label>Confirm</label>
                                 <input type="password" name="confirm_pass_phrase" className="form-control" onChange={handleChange} />
                             </div>
-                            <div className="mb-3">
-                                
-                                    <div className="form-check form-switch">
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            role="switch"
-                                            name="is_admin"
-                                            id="flexSwitchCheckChecked"
-
-                                            checked={user.is_admin}
-                                            // Use user.is_admin for state
-                                            onChange={handleChange} // Update state on change
-                                        />
-                                        <label className="form-check-label" htmlFor="flexSwitchCheckChecked">
-                                            {user.is_admin ? "Admin" : "Not Admin"}
-                                        </label>
-                                    </div>
-                                
-
-                            </div>
+                            
                             <div className="mb-3">
                                 <input type="submit" className="btn btn-primary" value="Save Changes" />
                             </div>
@@ -147,4 +123,4 @@ function EditUser() {
 
 }
 
-export default EditUser;
+export default ResetPassword;

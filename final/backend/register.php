@@ -17,11 +17,8 @@ $password = 'pwdpwd';
 
 $db = new PDO($dsn, $username, $password);
 
-
-if ($method === 'POST') {
-    // Prepare INSERT query and pass data directly to execute()
-    
-    $form_data = json_decode(file_get_contents('php://input'));
+// get data from json
+$form_data = json_decode(file_get_contents('php://input'));
    
     //trimming data recieved from form
     $first_name = trim($form_data->first_name ?? '');
@@ -59,40 +56,45 @@ if ($method === 'POST') {
             $errors[] = 'Passwords do not match.';
         }
 
-        $userCheck = "SELECT user_id
-                    FROM users
-                    WHERE username = ?";
-
-        try {
-            $stmtUsername = $db->prepare($userCheck);
-            $stmtUsername->execute([$username]);
-
-            if ($stmtUsername->fetch()) {
-                $errors[] = 'That username is already taken. Please try a different one.';
-              }
-
-        } catch(PDOException $e) {
-            logError($e);
-            $errors[] = 'Oops! Our bad. We cannot register you right now.';
-          }
-
-       $emailCheck =  "SELECT user_id
-                    FROM users
-                    WHERE email = ?";
-        try {
-            $stmtEmail = $db->prepare($emailCheck);
-            $stmtEmail->execute([ $email ]); 
-          
-            if ($stmtEmail->fetch()) {
-              $errors[] = 'We recognize that email.';
-            }
-          } catch (PDOException $e) {
-            logError($e);
-            $errors[] = 'Oops! Our bad. We cannot register you right now.';
-          }
+       
                 
          
-          
+
+
+if ($method === 'POST') {
+
+        $userCheck = "SELECT user_id
+            FROM users
+            WHERE username = ?";
+
+        try {
+        $stmtUsername = $db->prepare($userCheck);
+        $stmtUsername->execute([$username]);
+
+        if ($stmtUsername->fetch()) {
+        $errors[] = 'That username is already taken. Please try a different one.';
+        }
+
+        } catch(PDOException $e) {
+        logError($e);
+        $errors[] = 'Oops! Our bad. We cannot register you right now.';
+        }
+
+        $emailCheck =  "SELECT user_id
+            FROM users
+            WHERE email = ?";
+        try {
+        $stmtEmail = $db->prepare($emailCheck);
+        $stmtEmail->execute([ $email ]); 
+
+        if ($stmtEmail->fetch()) {
+        $errors[] = 'We recognize that email.';
+        }
+        } catch (PDOException $e) {
+        logError($e);
+        $errors[] = 'Oops! Our bad. We cannot register you right now.';
+        }
+        
           if (empty($errors)) {
             // Insert user
             $hashedPhrase = password_hash($form_data->pass_phrase, PASSWORD_DEFAULT);
@@ -176,26 +178,36 @@ if ($method === 'POST') {
     }
 
 if ($method === 'PUT') {
-    // Prepare UPDATE query and pass data directly to execute()
-    $form_data = json_decode(file_get_contents('php://input'));
-    $query = "UPDATE users SET first_name = ?, last_name = ?, username = ?, is_admin = ?, email = ?, pass_phrase = ? WHERE user_id = ?";
-    $stmt = $db->prepare($query);
-    $stmt->execute([$form_data->first_name, $form_data->last_name, $form_data->username, $form_data->is_admin, $form_data->email, $form_data->pass_phrase, $_GET['id']]);
+    
+        if (empty($errors)) {
 
-    echo json_encode(["success" => "done"]);
+        
+        $hashedPhrase = password_hash($form_data->pass_phrase, PASSWORD_DEFAULT);
+        // Prepare UPDATE query and pass data directly to execute()
+         $query = "UPDATE users SET first_name = ?, last_name = ?, username = ?, is_admin = ?, email = ?, pass_phrase = ? WHERE user_id = ?";
+         $stmt = $db->prepare($query);
+         $stmt->execute([$first_name, $last_name, $username, $form_data->is_admin, $email, $hashedPhrase, $_GET['id']]);
+        
+         $message = "Edited profile successfully.";
+         echo json_encode(["success" => "done", "message" => $message]);
+        } else {
+            echo json_encode($errors);
+        }  
+        
 }
 
 if($method === 'DELETE')
 {
 	//Delete User Data
-
 	$query = "DELETE FROM users WHERE user_id = ?";
 
 	$statement = $db->prepare($query);
 
 	$statement->execute([$_GET['id']]);
+    
+    echo json_encode(["success" => "done"]);
 
-	echo json_encode(["success" => "done"]);
+
 }
 
 
