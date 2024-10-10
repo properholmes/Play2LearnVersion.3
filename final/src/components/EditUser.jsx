@@ -6,61 +6,59 @@ function EditUser() {
 
     // Initialize user state with is_admin based on fetched data
     const [user, setUser] = useState({
-      first_name: '',
-      last_name: '',
-      email: '',
-      username: '',
-      pass_phrase: '',
-      is_admin: 0, // Assuming the backend returns numerical value for admin
-      date_registered: '',
-      registration_confirmed: 0
+        first_name: '',
+        last_name: '',
+        email: '',
+        username: '',
+        pass_phrase: '',
+        is_admin: 0, // Assuming the backend returns numerical value for admin
+        date_registered: '',
+        registration_confirmed: 0
     });
-   
-  
-    const [errors, setErrors] = useState([]);
-  
+    console.log(user);
+
     let navigate = useNavigate();
-  
+
     const handleChange = (event) => {
-      const { name, value, checked } = event.target; // Use checked for checkboxes
-  
-      setUser({
-        ...user,
-        [name]: name === 'is_admin' ? checked : value, // Update based on type
-      });
-    };
-  
-    const apiURL = `http://localhost:8888/phpreact/final/backend/users.php?id=${user_id}`;
-  
-    const fetchUserData = async () => {
-      const response = await fetch(apiURL);
-      const data = await response.json();
-      setUser(data);
-    };
-  
-    useEffect(() => {
-      fetchUserData();
-    }, []); // Empty dependency array: fetch data only once on mount
-  
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-  
-     
-        const apiPut = `http://localhost:8888/phpreact/final/backend/register.php?id=${user_id}`;
-  
-        const response = await fetch(apiPut, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(user)
+        const { name, value, checked } = event.target; // Use checked for checkboxes
+
+        setUser({
+            ...user,
+            [name]: name === 'is_admin' ? checked : value, // Update based on type
         });
-  
-        const data = await response.json();
-        setErrors(data);
-        navigate(`/viewaccount/${user_id}`); // Add after successful update
-      
     };
+
+
+    const apiURL = `http://localhost:8888/phpreact/final/backend/users.php?id=${user_id}`;
+
+    const fetchUserData = async () => {
+        const response = await fetch(apiURL);
+        const data = await response.json();
+        setUser(data);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            fetch(`http://localhost:8888/phpreact/final/backend/register.php?id=${user_id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            });
+            const response = await fetch(apiURL);
+            const data = await response.json();
+            navigate(`/viewaccount/${user_id}`);
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
 
     return (
         <div className="card" style={{ 'width': '30rem' }}>
@@ -73,18 +71,7 @@ function EditUser() {
             </div>
             <div className="card-body">
                 <div className="row">
-                    <div className="col-md-4">
-                        <ul className='list-group'>
-                            {errors.success ? <li className="list-group-item text-success">
-                                {errors.message}
-                            </li> : ''}
-                            {errors.length > 0 && errors.map((error, index) => (
-                                <li className="list-group-item text-danger" key={index}>
-                                    {error}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    <div className="col-md-4">&nbsp;</div>
                     <div className="col-md-4">
                         <form method="POST" onSubmit={handleSubmit}>
                             <div className="mb-3">
@@ -99,7 +86,24 @@ function EditUser() {
                                 <label>Username</label>
                                 <input type="text" name="username" className="form-control" value={user.username} onChange={handleChange} />
                             </div>
+                            <div className="mb-3">
+                                <div className="form-check form-switch">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        role="switch"
+                                        name="is_admin"
+                                        id="flexSwitchCheckChecked"
 
+                                        checked={user.is_admin}
+                                        // Use user.is_admin for state
+                                        onChange={handleChange} // Update state on change
+                                    />
+                                    <label className="form-check-label" htmlFor="flexSwitchCheckChecked">
+                                        {user.is_admin ? "Admin" : "Not Admin"}
+                                    </label>
+                                </div>
+                            </div>
 
                             <div className="mb-3">
                                 <label>Email</label>
@@ -113,27 +117,6 @@ function EditUser() {
                             <div className="mb-3">
                                 <label>Confirm</label>
                                 <input type="password" name="confirm_pass_phrase" className="form-control" onChange={handleChange} />
-                            </div>
-                            <div className="mb-3">
-                                
-                                    <div className="form-check form-switch">
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            role="switch"
-                                            name="is_admin"
-                                            id="flexSwitchCheckChecked"
-
-                                            checked={user.is_admin}
-                                            // Use user.is_admin for state
-                                            onChange={handleChange} // Update state on change
-                                        />
-                                        <label className="form-check-label" htmlFor="flexSwitchCheckChecked">
-                                            {user.is_admin ? "Admin" : "Not Admin"}
-                                        </label>
-                                    </div>
-                                
-
                             </div>
                             <div className="mb-3">
                                 <input type="submit" className="btn btn-primary" value="Save Changes" />

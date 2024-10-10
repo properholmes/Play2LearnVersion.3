@@ -38,7 +38,7 @@ function ViewAccount(props) {
                 <div className="row">
                     <div className="col-md-9"><h5>{user.first_name}'s Account Details</h5></div>
                     <div className="col-md-3">
-                        <Link to={`/reset/${user.user_id}`} className="btn btn-warning btn-sm">Edit</Link>
+                        <Link to={`/edit/${user.user_id}`} className="btn btn-warning btn-sm">Edit</Link>
                        
                     </div>
                 </div>
