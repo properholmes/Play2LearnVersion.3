@@ -15,6 +15,9 @@ function EditUser() {
         date_registered: '',
         registration_confirmed: 0
     });
+    const [errors, setErrors] = useState([]);
+
+    console.log(user);
 
     let navigate = useNavigate();
 
@@ -23,7 +26,7 @@ function EditUser() {
 
         setUser({
             ...user,
-            [name]: name === 'is_admin' ? checked : value, // Update based on type
+            [name]: name === 'is_admin' ? 1 : value, // Update based on type
         });
     };
 
@@ -40,7 +43,7 @@ function EditUser() {
         event.preventDefault();
 
         try {
-            fetch(`http://localhost:8888/phpreact/final/backend/register.php?id=${user_id}`, {
+            fetch(`http://localhost:8888/phpreact/final/backend/register.php`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -49,6 +52,7 @@ function EditUser() {
             });
             const response = await fetch(apiURL);
             const data = await response.json();
+            setErrors(data);
             navigate(`/viewaccount/${user_id}`);
         } catch (error) {
             console.error('Error updating user:', error);
@@ -70,7 +74,18 @@ function EditUser() {
             </div>
             <div className="card-body">
                 <div className="row">
-                    <div className="col-md-4">&nbsp;</div>
+                    <div className="col-md-4">
+                    <ul className='list-group'>
+                                {errors.success ?<li className="list-group-item text-success">
+                                        {errors.message}
+                                    </li> : ''   }
+                                {errors.length > 0 && errors.map((error, index) => (
+                                    <li className="list-group-item text-danger" key={index}>
+                                        {error}
+                                    </li>
+                                ))}
+                            </ul>
+                    </div>
                     <div className="col-md-4">
                         <form method="POST" onSubmit={handleSubmit}>
                             <div className="mb-3">
@@ -92,8 +107,9 @@ function EditUser() {
                                         type="checkbox"
                                         role="switch"
                                         id="flexSwitchCheckChecked"
+                                        value={user.is_admin}
 
-                                        checked={user.is_admin}
+                                        // checked={user.is_admin}
                                         // Use user.is_admin for state
                                         onChange={handleChange} // Update state on change
                                     />
