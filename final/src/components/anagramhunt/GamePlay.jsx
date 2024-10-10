@@ -10,24 +10,10 @@ import anagrams from "./anagramsArray.js"
 
 function GamePlay(props) {
     const [wordLength, setWordLength] = useState(props.wordLength); 
-    // all the word possibilies based on the character length the user selected in the first view
-    const [allWords, setAllWords] = useState(anagrams[wordLength]);
    
-    // list of possible answers in anagram block
-    const[possibleWords, setPossibleWords] = useState(props.findRandom(allWords));
+   
 
-    // find the starting word in that anagram block
-    const [wordHint, setWordHint] = useState(props.findRandom(possibleWords));
-
-
-    // filter word array to remove the word hint or keyword
-    const [filteredPossible, setFilteredPossible] = useState(() => {
-        if (possibleWords && wordHint) {
-            return possibleWords.filter((item) => item !== wordHint);
-        } else {
-            return []; // Return an empty array if either possibleWords or wordHint is undefined
-        }
-    });
+    const{allWords, possibleWords, wordHint, setWordHint, setPossibleWords, filteredPossible, setFilteredPossible, setAllWords} = props;
 
     // words left in the anagram block
     const [wordsLeft, setWordsLeft] = useState(possibleWords.length - 1);

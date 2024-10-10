@@ -55,7 +55,23 @@ function App() {
   // Logic for displaying correct answers in the final score view of anagram game
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const[blockCorrect, setBlockCorrect]= useState([]);
-  const [filteredPossible, setFilteredPossible] = useState([]);
+
+   // all the word possibilies based on the character length the user selected in the first view
+   const [allWords, setAllWords] = useState(anagrams[wordLength]);
+   // list of possible answers in anagram block
+   const[possibleWords, setPossibleWords] = useState(findRandom(allWords));
+   // find the starting word in that anagram block
+   const [wordHint, setWordHint] = useState(findRandom(possibleWords));
+
+
+   // filter word array to remove the word hint or keyword
+   const [filteredPossible, setFilteredPossible] = useState(() => {
+       if (possibleWords && wordHint) {
+           return possibleWords.filter((item) => item !== wordHint);
+       } else {
+           return []; // Return an empty array if either possibleWords or wordHint is undefined
+       }
+   });
 
   const [sessionId, setSessionId] = useState(sessionStorage.getItem('sessionId'));
 
@@ -86,7 +102,14 @@ function App() {
           blockCorrect={blockCorrect}
           setBlockCorrect={setBlockCorrect} 
           filteredPossible={filteredPossible}
-          setFilteredPossible={setFilteredPossible}/>
+          setFilteredPossible={setFilteredPossible}
+          allWords={allWords}
+          setAllWords={setAllWords}
+          possibleWords={possibleWords}
+          setPossibleWords={setPossibleWords}
+          wordHint={wordHint}
+          setWordHint={setWordHint}
+          />
         }>
         </Route>
         <Route exact path="/score" element={
@@ -95,7 +118,9 @@ function App() {
           wordLength={wordLength}
           correctAnswers={correctAnswers}
           blockCorrect={blockCorrect}
-          sessionId={sessionId} />
+          sessionId={sessionId} 
+          filteredPossible={filteredPossible}
+          wordHint={wordHint}/>
         }>          
         </Route>
         <Route exact path="/mathfacts" element={<Mathfacts sessionId={sessionId} />} />

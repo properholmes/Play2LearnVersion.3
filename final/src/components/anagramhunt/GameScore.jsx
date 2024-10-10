@@ -18,14 +18,17 @@ function GameScore(props) {
         anagram_operation: props.wordLength
     })
 
-    console.log(tracking);
     const [errors, setErrors] = useState('');
     const [hasPosted, setHasPosted] = useState(false);
 
     const [scoreMessage, setScoreMessage] = useState('');
     const correctList = props.correctAnswers;
+    const filteredList = props.filteredPossible;
     const correctOptions = correctList.map((word, index) => (
         <li className="list-group-item" style={{ color: 'green', fontWeight: 'bold' }} key={index}>{word}</li>
+    ));
+    const wrongOptions = filteredList.map((word, index) => (
+        <li className="list-group-item" style={{ color: 'red', fontWeight: 'bold' }} key={index}>{word}</li>
     ));
 
     useEffect(() => {
@@ -60,6 +63,10 @@ function GameScore(props) {
             <h5>Your correct answers:</h5>
             <ul className="list-group">
                 {correctOptions}
+            </ul>
+            <h5>You didn't get the following anagrams for <strong>{props.wordHint}</strong></h5>
+            <ul className="list-group">
+                {wrongOptions}
             </ul>
             <ul className='list-group'>
                 {errors.success ? <li className="list-group-item text-success">
