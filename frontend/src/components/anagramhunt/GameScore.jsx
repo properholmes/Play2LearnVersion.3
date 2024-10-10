@@ -9,14 +9,16 @@ function reset(props) {
 }
 
 
+
 function GameScore(props) {
 
     const [tracking, setTracking] = useState({
         anagram_user_id: props.sessionId,
         anagram_score: props.score,
-        anagram_max_number: props.wordLength,
-        anagram_operation: "Typing"
+        anagram_operation: props.wordLength
     })
+
+    console.log(tracking);
     const [errors, setErrors] = useState('');
     const [hasPosted, setHasPosted] = useState(false);
 
@@ -34,7 +36,7 @@ function GameScore(props) {
         }
         if (!hasPosted) {
             async function fetchData() {
-                const apiURL = 'http://localhost:8888/phpreact/frontend/backend/tracking.php';
+                const apiURL = 'http://localhost:8888/phpreact/frontend/backend/anagram-tracking.php';
                 const response = await fetch(apiURL, {
                     method: 'POST',
                     headers: {
@@ -44,6 +46,7 @@ function GameScore(props) {
                 })
                 const data = await response.json();
                 setErrors(data);
+                setHasPosted(true);
             }
             fetchData();
         }

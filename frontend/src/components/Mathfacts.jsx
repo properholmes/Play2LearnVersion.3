@@ -23,7 +23,7 @@ function Mathfacts(props) {
     math_operation: operation
 })
 
-console.log(tracking);
+console.log(props.sessionId);
 
   // effect to manage the countdown timer
   useEffect(() => {
@@ -37,7 +37,11 @@ console.log(tracking);
       return () => clearInterval(timerId);
     } else if (timer === 0) {
       endGame(); // end the game when the timer reaches zero
-      fetchData();
+      
+      if (!hasPosted) {
+        fetchData();
+      }
+     
     }
   }, [isGameActive, timer]); // Depend on game active state and timer
 
@@ -51,6 +55,7 @@ console.log(tracking);
         body: JSON.stringify(tracking)
     })
     const data = await response.json();
+    setHasPosted(true);
     setMessages(data);
 }
 

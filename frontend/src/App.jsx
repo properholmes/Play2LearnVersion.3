@@ -54,6 +54,7 @@ function App() {
   // Logic for displaying correct answers in the final score view of anagram game
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const[blockCorrect, setBlockCorrect]= useState([]);
+  const [filteredPossible, setFilteredPossible] = useState([]);
 
   const [sessionId, setSessionId] = useState(sessionStorage.getItem('sessionId'));
 
@@ -82,7 +83,9 @@ function App() {
           correctAnswers={correctAnswers}
           setCorrectAnswers={setCorrectAnswers}
           blockCorrect={blockCorrect}
-          setBlockCorrect={setBlockCorrect} />
+          setBlockCorrect={setBlockCorrect} 
+          filteredPossible={filteredPossible}
+          setFilteredPossible={setFilteredPossible}/>
         }>
         </Route>
         <Route exact path="/score" element={
