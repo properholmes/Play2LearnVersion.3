@@ -15,8 +15,7 @@ function EditUser() {
         date_registered: '',
         registration_confirmed: 0
     });
-    console.log(user);
-
+    
     let navigate = useNavigate();
 
     const handleChange = (event) => {

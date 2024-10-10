@@ -12,7 +12,6 @@ function TextInput(props) {
     if (event.key === 'Enter') {
       event.preventDefault(); // Prevent form submission
       // Do something with the input value, e.g., submit it to an API
-      console.log(props.inputValue);
     }
   };
 

@@ -23,7 +23,7 @@ function Mathfacts(props) {
     math_operation: operation
 })
 
-console.log(props.sessionId);
+
 
   // effect to manage the countdown timer
   useEffect(() => {

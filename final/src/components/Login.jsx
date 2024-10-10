@@ -33,7 +33,7 @@ function Login(props) {
         }
     }, [errors]);
 
-    console.log(sessionStorage);
+
 
 
     // create hnadleChange function to detect typing event on input field
