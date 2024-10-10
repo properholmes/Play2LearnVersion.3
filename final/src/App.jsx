@@ -14,6 +14,7 @@ import Leaderboard from './components/LeaderBoard.jsx';
 import Login from './components/Login.jsx';
 import Mathfacts from './components/Mathfacts.jsx'
 import Register from './components/Register.jsx';
+import Reset from './components/Reset.jsx';
 import Reviews from './components/Reviews.jsx'
 import UsersList from './components/UsersList.jsx';
 import ViewAccount from './components/ViewAccount.jsx';
@@ -130,6 +131,7 @@ function App() {
         <Route exact path="/admin/:user_id" element={<UsersList />} />
         <Route exact path="/contact" element={<Contact />} />
         <Route path="/edit/:user_id" element={<EditUser sessionId={sessionId} />} />
+        <Route path="/reset/:user_id" element={<Reset sessionId={sessionId} />} />
         <Route path="/viewaccount/:user_id" element={<ViewAccount sessionId={sessionId} />} />
         <Route path="/reviews" element={<Reviews sessionId={sessionId} />} />
         <Route path="/leaderboard" element={<Leaderboard/>} />
