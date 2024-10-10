@@ -11,10 +11,11 @@ function UserGuesses(props) {
 
     return (
         <>
+         {/* Use this for testing : Keeping for reference
         <h3>Pssst: Here are the actual answers</h3>
         <ul className="list-group">
             {listOptions}
-        </ul>
+        </ul> */}
         <br/>
         <h5>Your correct answers:</h5>
         <ul className="list-group">
