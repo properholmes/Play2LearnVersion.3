@@ -6,13 +6,13 @@ function Button( {buttondata} ) {
 
         return (
             // <button onClick={handleClick}>Play</button>
-            <a className="btn btn-primary" href={buttondata.src} target="_blank">Play {buttondata.title}</a>
+            <a className="btn btn-primary" href={buttondata.src}>Play {buttondata.title}</a>
         )
        
     } else {
 
         return (
-            <Link className="btn btn-primary" to={buttondata.src} target="_blank">Play {buttondata.title}</Link>
+            <Link className="btn btn-primary" to={buttondata.src}>Play {buttondata.title}</Link>
         )
 
     }
