@@ -178,9 +178,9 @@ if ($method === 'POST') {
 if ($method === 'PUT') {
     // Prepare UPDATE query and pass data directly to execute()
     $form_data = json_decode(file_get_contents('php://input'));
-    $query = "UPDATE users SET first_name = ?, last_name = ?, username = ?, email = ?, pass_phrase = ? WHERE user_id = ?";
+    $query = "UPDATE users SET first_name = ?, last_name = ?, username = ?, is_admin = ?, email = ?, pass_phrase = ? WHERE user_id = ?";
     $stmt = $db->prepare($query);
-    $stmt->execute([$form_data->first_name, $form_data->last_name, $form_data->username, $form_data->email, $form_data->pass_phrase, $_GET['id']]);
+    $stmt->execute([$form_data->first_name, $form_data->last_name, $form_data->username, $form_data->is_admin, $form_data->email, $form_data->pass_phrase, $_GET['id']]);
 
     echo json_encode(["success" => "done"]);
 }

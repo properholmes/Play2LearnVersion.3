@@ -15,6 +15,7 @@ function EditUser() {
         date_registered: '',
         registration_confirmed: 0
     });
+    console.log(user);
 
     let navigate = useNavigate();
 
@@ -91,6 +92,7 @@ function EditUser() {
                                         className="form-check-input"
                                         type="checkbox"
                                         role="switch"
+                                        name="is_admin"
                                         id="flexSwitchCheckChecked"
 
                                         checked={user.is_admin}
