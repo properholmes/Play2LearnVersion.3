@@ -2,7 +2,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import React, { useState, useEffect } from 'react';
 
-function Mathfacts() {
+function Mathfacts(props) {
   // State variables to manage game state
   const [score, setScore] = useState(0);            // track player's score
   const [operation, setOperation] = useState("addition"); // current math operation selected by player
@@ -11,9 +11,19 @@ function Mathfacts() {
   const [timer, setTimer] = useState(30);           // countdown timer starting at 30 seconds
   const [isGameActive, setIsGameActive] = useState(false); // track if game is currently active
   const [isFinalView, setIsFinalView] = useState(false);   // tracks whether to show the final score view
+  const [hasPosted, setHasPosted] = useState(false);
+  const [messages, setMessages] = useState([]);
 
   // generate a random integer between low and high (inclusive)
   const randInt = (low, high) => Math.floor(Math.random() * (high - low + 1) + low);
+
+  const [tracking, setTracking] = useState({
+    math_user_id: props.sessionId,
+    math_score: score,
+    math_operation: operation
+})
+
+console.log(tracking);
 
   // effect to manage the countdown timer
   useEffect(() => {
@@ -27,8 +37,23 @@ function Mathfacts() {
       return () => clearInterval(timerId);
     } else if (timer === 0) {
       endGame(); // end the game when the timer reaches zero
+      fetchData();
     }
   }, [isGameActive, timer]); // Depend on game active state and timer
+
+  async function fetchData() {
+    const apiURL = 'http://localhost:8888/phpreact/frontend/backend/math-tracking.php';
+    const response = await fetch(apiURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(tracking)
+    })
+    const data = await response.json();
+    setMessages(data);
+}
+
 
   // create a function to start the game
   const startGame = () => {
@@ -98,6 +123,10 @@ function Mathfacts() {
     const correctAnswer = evaluateAnswer(problem); // get the correct answer
     if (parseInt(userAnswer) === correctAnswer) { // compare user's answer to correct answer
       setScore(prev => prev + 1); // increment score for correct answer
+      setTracking({ // Update tracking with new score
+        ...tracking,
+        math_score: score + 1
+      });
       setUserAnswer(""); // clear the input field
       createMathProblem(); // generate a new problem
     } else {
@@ -169,6 +198,16 @@ function Mathfacts() {
               <h3>Your final score is:</h3>
               <h2 id="final-score">{score}</h2>
               {/* Button to reset the game */}
+              <ul className='list-group'>
+                {messages.success ? <li className="list-group-item text-success">
+                    {messages.message}
+                </li> : ''}
+                {messages.length > 0 && messages.map((error, index) => (
+                    <li className="list-group-item text-danger" key={index}>
+                        {error}
+                    </li>
+                ))}
+            </ul>
               <button onClick={() => setIsFinalView(false) & setIsGameActive(false)} id="again-btn">Play Again</button>
             </div>
           )}

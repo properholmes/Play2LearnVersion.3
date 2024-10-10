@@ -11,6 +11,15 @@ function reset(props) {
 
 function GameScore(props) {
 
+    const [tracking, setTracking] = useState({
+        anagram_user_id: props.sessionId,
+        anagram_score: props.score,
+        anagram_max_number: props.wordLength,
+        anagram_operation: "Typing"
+    })
+    const [errors, setErrors] = useState('');
+    const [hasPosted, setHasPosted] = useState(false);
+
     const [scoreMessage, setScoreMessage] = useState('');
     const correctList = props.correctAnswers;
     const correctOptions = correctList.map((word, index) => (
@@ -18,12 +27,28 @@ function GameScore(props) {
     ));
 
     useEffect(() => {
-        if (props.score > 2) {
+        if (props.score > 1) {
             setScoreMessage('Great job!');
         } else {
             setScoreMessage('Better luck next time :(');
         }
-    }, [props.score]);
+        if (!hasPosted) {
+            async function fetchData() {
+                const apiURL = 'http://localhost:8888/phpreact/frontend/backend/tracking.php';
+                const response = await fetch(apiURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(tracking)
+                })
+                const data = await response.json();
+                setErrors(data);
+            }
+            fetchData();
+        }
+
+    }, []);
 
     return (
         <div id="ana-finalview" className="d-grid gap-5">
@@ -32,6 +57,16 @@ function GameScore(props) {
             <h5>Your correct answers:</h5>
             <ul className="list-group">
                 {correctOptions}
+            </ul>
+            <ul className='list-group'>
+                {errors.success ? <li className="list-group-item text-success">
+                    {errors.message}
+                </li> : ''}
+                {errors.length > 0 && errors.map((error, index) => (
+                    <li className="list-group-item text-danger" key={index}>
+                        {error}
+                    </li>
+                ))}
             </ul>
             <Link to="/play" onClick={reset} className="btn btn-primary">Play Again!</Link>
             <Link to="/anagramhunt" onClick={reset} className="btn btn-primary">Back to Settings</Link>
