@@ -10,6 +10,7 @@ import GameScore from './components/anagramhunt/GameScore.jsx';
 import GameSetup from './components/anagramhunt/GameSetup.jsx';
 import Header from "./components/Header.jsx";
 import Homepage from './components/Homepage.jsx';
+import Leaderboard from './components/LeaderBoard.jsx';
 import Login from './components/Login.jsx';
 import Mathfacts from './components/Mathfacts.jsx'
 import Register from './components/Register.jsx';
@@ -104,7 +105,8 @@ function App() {
         <Route exact path="/contact" element={<Contact />} />
         <Route path="/edit/:user_id" element={<EditUser sessionId={sessionId} />} />
         <Route path="/viewaccount/:user_id" element={<ViewAccount sessionId={sessionId} />} />
-        <Route path="/reviews/:user_id" element={<Reviews />} />
+        <Route path="/reviews/" element={<Reviews />} />
+        <Route path="/leaderboard" element={<Leaderboard/>} />
         <Route path="*" element={<Redirect to="/" replace />} />
     </Routes>
     <Footer sessionId={sessionId} setSessionId={setSessionId} />
