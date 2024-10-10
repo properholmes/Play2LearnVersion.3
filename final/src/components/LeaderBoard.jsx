@@ -50,7 +50,7 @@ function LeaderBoard() {
           <thead>
             <tr>
               <th>Username</th>
-              <th>Math Facts Practice</th>
+              <th>Math Game</th>
               <th>Score</th>
               <th>Highest Score (so far)</th>
               <th>Operation</th>
@@ -73,7 +73,7 @@ function LeaderBoard() {
           <thead>
             <tr>
               <th>Username</th>
-              <th>Anagram Hunt</th>
+              <th>Anagram Game</th>
               <th>Score</th>
               <th>Highest Score (so far)</th>
               <th>Number of Letters</th>
