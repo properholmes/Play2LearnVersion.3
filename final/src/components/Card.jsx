@@ -1,5 +1,5 @@
 import Button from './Button'
-
+// create the card for the games, pass in data via props
 function Card({ data }) {
 
     return (

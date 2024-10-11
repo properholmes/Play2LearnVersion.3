@@ -4,9 +4,9 @@ import { Badge } from 'react-bootstrap';
 
 function ViewAccount(props) {
 
-    let navigate = useNavigate();
-    const { user_id } = useParams();
-
+    let navigate = useNavigate(); // initialize navigation for redirection
+    const { user_id } = useParams(); // extract user ID from URL parameters
+    // initialize user state
     const [user, setUser] = useState({
         first_name: '',
         last_name: '',
@@ -18,16 +18,16 @@ function ViewAccount(props) {
         registration_confirmed: 0
     });
 
-
+    // define API for fetching user data
     const apiURL = `http://localhost:8888/phpreact/final/backend/users.php?id=${user_id}`
-
+    // function to fetch user data from the API
     const fetchUserData = async () => {
-
-        const response = await fetch(apiURL);
-        const data = await response.json();
-        setUser(data);
+        const response = await fetch(apiURL); // fetch data from API
+        const data = await response.json(); // parse json response
+        setUser(data); // update state w/ fetched user data
     }
-
+    
+    // fetch user data when the component mounts
     useEffect(() => {
         fetchUserData();
     }, []);

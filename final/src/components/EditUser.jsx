@@ -2,63 +2,76 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function EditUser() {
+    // get user_id from the URL parameters
     const { user_id } = useParams();
 
-    // Initialize user state with is_admin based on fetched data
+    // initialize user state w/ default values
     const [user, setUser] = useState({
         first_name: '',
         last_name: '',
         email: '',
         username: '',
         pass_phrase: '',
-        is_admin: 0, // Assuming the backend returns numerical value for admin
+        is_admin: 0, // assuming the backend returns a numerical value for admin
         date_registered: '',
         registration_confirmed: 0
     });
     
+    // initialize navigate for redirection after form submission
     let navigate = useNavigate();
 
+    // handle input changes
     const handleChange = (event) => {
-        const { name, value, checked } = event.target; // Use checked for checkboxes
+        const { name, value, checked } = event.target; // use checked for checkboxes
 
+        // update user state based on the input type
         setUser({
             ...user,
-            [name]: name === 'is_admin' ? checked : value, // Update based on type
+            [name]: name === 'is_admin' ? checked : value, // Update based on input type
         });
     };
 
-
+    // construct API URL to fetch user data
     const apiURL = `http://localhost:8888/phpreact/final/backend/users.php?id=${user_id}`;
 
+    // fetch user data from the API
     const fetchUserData = async () => {
         const response = await fetch(apiURL);
         const data = await response.json();
-        setUser(data);
+        setUser(data); // set user state w/ fetched data
     };
 
+    // handle form submission
     const handleSubmit = async (event) => {
-        event.preventDefault();
+        event.preventDefault(); // prevent default form submission behavior
 
         try {
-            fetch(`http://localhost:8888/phpreact/final/backend/register.php?id=${user_id}`, {
+            // update user data via API
+            await fetch(`http://localhost:8888/phpreact/final/backend/register.php?id=${user_id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(user)
+                body: JSON.stringify(user) // send the updated user data
             });
-            const response = await fetch(apiURL);
-            const data = await response.json();
+
+            // redirect to the user's account view after successful update
             navigate(`/viewaccount/${user_id}`);
         } catch (error) {
-            console.error('Error updating user:', error);
+            console.error('Error updating user:', error); // log any errors during update
         }
     };
+
+    // Fetch user data on component mount
+    useEffect(() => {
+        fetchUserData();
+    }, []);
 
     useEffect(() => {
         fetchUserData();
     }, []);
 
+    
     return (
         <div className="card" style={{ 'width': '30rem' }}>
             <div className="card-header">

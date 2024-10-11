@@ -38,7 +38,7 @@ const quotes = [
     const intervalId = setInterval(() => {
       setQuote(getRandomQuote());
     }, 10000);
-//unmount quotes component as necessary for switching between components/routes
+    // unmount quotes component as necessary for switching between components/routes
     return () => clearInterval(intervalId);
   },[]);
   

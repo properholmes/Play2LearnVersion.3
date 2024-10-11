@@ -31,7 +31,7 @@ if ($method === 'GET') {
         if ($result) {
             echo json_encode($result);
         } else {
-            // Handle case where no user was found
+            // handle case where no user was found
             echo json_encode(['error' => 'User not found']);
         }
     } else {
@@ -51,7 +51,7 @@ if ($method === 'POST') {
     
     $data = json_decode(file_get_contents('php://input'));
    
-    //create empty arrays for errors handle error validation
+    // create empty arrays for errors handle error validation
     
     $errors = [];
 

@@ -2,22 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 function LeaderBoard() {
-
-  let navigate = useNavigate();
-  const [mathScores, setDataScores] = useState([]); // Use an array for scores
-  const [anagramScores, setAnagramScores] = useState([]); // Use an array for scores
+  let navigate = useNavigate(); // initialize useNavigate for navigation
+  // create state for math & anagram scores
+  const [mathScores, setDataScores] = useState([]);
+  const [anagramScores, setAnagramScores] = useState([]);
 
   useEffect(() => {
-    const apiURLMath = 'http://localhost:8888/phpreact/final/backend/math-tracking.php'; // Math API location
-    const apiURLAnagram = 'http://localhost:8888/phpreact/final/backend/anagram-tracking.php'; // Anagram API location
+    const apiURLMath = 'http://localhost:8888/phpreact/final/backend/math-tracking.php'; // math API location
+    const apiURLAnagram = 'http://localhost:8888/phpreact/final/backend/anagram-tracking.php'; // anagram API location
 
+    // async fetch math & anagram scores functions
     async function fetchMath() {
       try {
-        const response = await fetch(apiURLMath);
+        const response = await fetch(apiURLMath); // fetch math scores
         const data = await response.json();
-        setDataScores(data.filter(user => user.score > 0)); // Filter scores with score > 0
+        setDataScores(data.filter(user => user.score > 0)
+                          .sort((a, b) => (b.max_number || 0) - (a.max_number || 0))
+                      ); // set scores where score > 0
       } catch (error) {
-        console.error('Error fetching Math data:', error);
+        console.error('Error fetching Math data:', error); // handle fetch error
       }
     }
 
@@ -25,15 +28,17 @@ function LeaderBoard() {
       try {
         const response = await fetch(apiURLAnagram);
         const data = await response.json();
-        setAnagramScores(data.filter(user => user.score > 0)); // Filter scores with score > 0
+        setAnagramScores(data.filter(user => user.score > 0)
+                             .sort((a, b) => (b.max_number || 0) - (a.max_number || 0))
+                        );
       } catch (error) {
         console.error('Error fetching Anagram data:', error);
       }
     }
 
-    fetchMath();
+    fetchMath(); // call functions for scores
     fetchAnagrams();
-  }, []);
+  }, []); // empty dependency array to run once on mount
 
   return (
     <div className="card">
@@ -42,7 +47,7 @@ function LeaderBoard() {
           <div className="col-md-6">
             <b><h4>Leaderboard</h4></b>
           </div>
-          <div className="col-md-6" /> {/* Adjusted to avoid unnecessary div */}
+          <div className="col-md-6" /> {/* Adjusted from P2Lv.2 to avoid unnecessary div */}
         </div>
       </div>
       <div className="card-body">
@@ -57,6 +62,7 @@ function LeaderBoard() {
             </tr>
           </thead>
           <tbody>
+            {/* Map the scores to the table */}
             {mathScores &&
               mathScores.map((user, index) => (
                 <tr key={index}>
@@ -80,6 +86,7 @@ function LeaderBoard() {
             </tr>
           </thead>
           <tbody>
+            {/* Map the scores to the table */}
             {anagramScores &&
               anagramScores.map((user, index) => (
                 <tr key={index}>

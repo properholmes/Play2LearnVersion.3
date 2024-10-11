@@ -62,24 +62,24 @@ function Mathfacts(props) {
 
   // create a function to start the game
   const startGame = () => {
-    setIsGameActive(true); // Activate the game state
-    setScore(0);           // Reset the score
-    setTimer(30);         // Reset the timer
-    createMathProblem();   // Generate the first math problem
+    setIsGameActive(true); // activate the game state
+    setScore(0);           // reset the score
+    setTimer(30);         // reset the timer
+    createMathProblem();   // generate the first math problem
   };
 
   // create a function to end the game
   const endGame = () => {
-    setIsGameActive(false); // Deactivate game state
-    setIsFinalView(true);   // Show final score view
+    setIsGameActive(false); // deactivate game state
+    setIsFinalView(true);   // show final score view
   };
 
   // function creating a new math problem based on the selected operation
   const createMathProblem = () => {
-    let num1 = randInt(1, 10); // Generate a random number between 1 and 10
-    let num2 = randInt(1, 10); // Generate another random number
+    let num1 = randInt(1, 10); // generate 2 random numbers between 1 and 10
+    let num2 = randInt(1, 10); 
 
-    let newProblem; // let variable to store the generated problem, 
+    let newProblem; // let variable to store the generated problem, (wouldn't work otherwise) 
 
     // switch statement to create the problem based on the selected operation
     switch (operation) {
@@ -99,10 +99,10 @@ function Mathfacts(props) {
       default:
         newProblem = "Invalid operation!"; // fallback for invalid operationsa
     }
-    setProblem(newProblem); // Update the problem state with the new problem
+    setProblem(newProblem); // update the problem state with the new problem
   };
 
-    // Function to evaluate the answer based on the problem
+    // function to evaluate the answer based on the problem
     const evaluateAnswer = (problem) => {
       const [left, operator, right] = problem.split(' '); // split the problem into components
       const num1 = parseInt(left); // convert the left number to an integer
@@ -111,15 +111,15 @@ function Mathfacts(props) {
       // switch statement to return the correct answer based on the operation
       switch (operator) {
         case '+':
-          return num1 + num2; // Return sum
+          return num1 + num2; // return sum
         case '-':
-          return num1 - num2; // Return difference
+          return num1 - num2; // .. difference
         case '*':
-          return num1 * num2; // Return product
+          return num1 * num2; // .. product
         case '/':
-          return num1 / num2; // Return quotient
+          return num1 / num2; // .. quotient
         default:
-          return null; // Fallback if operation is invalid
+          return null; // fallback if operation is invalid
       }
     };
 
@@ -128,7 +128,7 @@ function Mathfacts(props) {
     const correctAnswer = evaluateAnswer(problem); // get the correct answer
     if (parseInt(userAnswer) === correctAnswer) { // compare user's answer to correct answer
       setScore(prev => prev + 1); // increment score for correct answer
-      setTracking({ // Update tracking with new score
+      setTracking({ // update tracking with new score
         ...tracking,
         math_score: score + 1
       });
@@ -144,13 +144,13 @@ function Mathfacts(props) {
       <main>
         <div id="math-container">
           <h2 id="math-title">Math Facts Practice</h2>
-          {/* Setup screen for selecting operation */}
+          {/* setup screen for selecting operation */}
           {!isGameActive && !isFinalView && (
             <div id="math-setup">
               <form id="math-form">
                 <div id="selection-operation">
                   <label htmlFor="operation">Operation:</label>
-                  {/* Dropdown for selecting math operation */}
+                  {/* dropdown for selecting math operation */}
                   <select
                     value={operation}
                     onChange={(e) => setOperation(e.target.value)}

@@ -36,10 +36,10 @@ require_once 'users.php';
   } catch (PDOException $e) {
     logError($e);
   }
-// Flush the buffered output
+// flush the buffered output 
 ob_end_flush();
 ?>
-<!-- Won't get her unless something went wrong -->
+<!-- Won't get here unless something went wrong -->
 <main class="narrow">
   <h1><?= $pageTitle ?></h1>
 </main>

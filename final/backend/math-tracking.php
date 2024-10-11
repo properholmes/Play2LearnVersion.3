@@ -17,7 +17,7 @@
 
     if ($method === 'GET') {
         if (isset($_GET['id'])) {
-            // Fetch single user data using prepared statement
+            // fetch single user data using prepared statement
             $query = "SELECT mfs.*, u.username, ahs.*
             FROM math_facts_scores mfs
             JOIN users u ON mfs.user_id = u.user_id
@@ -29,12 +29,12 @@
             if ($result) {
                 echo json_encode($result);
             } else {
-                // Handle case where no user was found
+                // handle case where no user was found
                 echo json_encode(['error' => 'User not found']);
             }
         } else {
 
-            // Fetch all scores using prepared statement
+            // fetch all scores using prepared statement
             $query = "SELECT mfs.*, u.username
             FROM math_facts_scores mfs
             JOIN users u ON mfs.user_id = u.user_id;";
@@ -57,7 +57,7 @@
 
     if ($math_user_id > 0 && $data->math_score > 0) {
 
-    // Prepare INSERT query for math_fact_scores
+    // prepare INSERT query for math_fact_scores
     $qInsertsMathFact = "INSERT INTO math_facts_scores
     (user_id, score, max_number, operation)
     VALUES (:user_id, :score, :max_number, :operation);";
@@ -66,7 +66,6 @@ try {
    
     // Calculate the maximum score separately
     $maxScore = $db->query("SELECT COALESCE(MAX(score), 0) FROM math_facts_scores")->fetchColumn();
-
 
     $stmtInsertsMathFact = $db->prepare($qInsertsMathFact);
     $stmtInsertsMathFact->bindParam(':user_id', $math_user_id);
@@ -84,10 +83,10 @@ try {
 }
     }
     else {
-        // Handle the case where user_id is 0 or null
+        // handle the case where user_id is 0 or null
         $errors[] = "Login to keep track of your scores! User ID cannot be 0 or null.";
     }
-    // Respond with success message or errors
+    // respond with success message or errors
     if (empty($errors)) {
         $message = "Successfully tracked score! You are on the leaderboard";
         echo json_encode(["success" => "done", "message" => $message]);

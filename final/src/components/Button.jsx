@@ -5,7 +5,6 @@ function Button( {buttondata} ) {
     if(buttondata.type === "math") {
 
         return (
-            // <button onClick={handleClick}>Play</button>
             <a className="btn btn-primary" href={buttondata.src}>Play {buttondata.title}</a>
         )
        

@@ -2,47 +2,25 @@ import TextInput from './TextInput';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-// need this here below???
-
-// function UsersList() {
-//     const [users, setUsers] = useState([]);
-  
-//     useEffect(() => {
-//       const apiURL = 'http://localhost:8888/phpreact/final/backend/users.php'; //assuming users.php is in the backend folder
-  
-//       async function fetchUsers() {
-//         try {
-//           const response = await fetch(apiURL);
-//           const data = await response.json();
-//           setUsers(data);
-//         } catch (error) {
-//           console.error('Error fetching users:', error);
-//           // Handle the error here, e.g., show an error message to the user
-//         }
-//       }
-  
-//       fetchUsers();
-//     }, []);
-
 function MyAccount() {
-
+    // state holding user information
     const [user, setUser] = useState({
-        first_name : '',
-        last_name : '',
-        email : '', 
-        password: ''
-
+        first_name: '', 
+        last_name: '', 
+        email: '', 
+        password: '' 
     });
 
+    // handle input field changes
     const handleChange = (event) => {
-
-        const { name, value } = event.target;
+        const { name, value } = event.target; // destructure name and value from the event
 
         setUser({
+            // spread operator to maintain existing user values
             ...user,
-            [name] :value
-        })
-
+            // update the specific field based on input name
+            [name]: value
+        });
     };
 
     return (

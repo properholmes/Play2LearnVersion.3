@@ -5,18 +5,18 @@ import { Link, useNavigate } from 'react-router-dom';
 function Contact() {
     // declare useNavigate to navigate 
     let navigate = useNavigate();
-
+    // state to hold errors
     const [errors, setErrors] = useState([]);
 
-
     useEffect(() => {
+        // effect to handle navigation after successful submission 
         if (errors.success === 'done') {
             setErrors([]);
-            navigate("/contact");
+            navigate("/contact"); // navigate back to the contact page
         }
-    }, [errors]);
+    }, [errors]); // dependency on errors state
 
-    //create an empty and stateful object
+    // create an empty and stateful object
     const [contact, setContact] = useState({
         first_name: '',
         last_name: '',
@@ -25,16 +25,17 @@ function Contact() {
     });
 
 
-    // create hnadleChange function to detect typing event on input field
+    // create handleChange function to detect typing event on input field
     // match the name of the object key to the value types in input field
     const handleChange = (event) => {
-
+        // destructure name & value from the event
         const { name, value } = event.target;
 
         setContact({
-            // spread operator takes object in-place values and 
+            // spread operator takes "object in-place" values / maintains existing values
             ...contact,
-            // copy values from input field associated w/ the name of the field into the object values
+            // copy values from input field associated w/ the name of the field into the object values, 
+            // (updates specific field based on input name)
             [name]: value
         })
 
@@ -42,19 +43,20 @@ function Contact() {
     // connect the handleSubmit function to the php file in order to facilitate data exchange using an api
     const handleSubmit = async (event) => {
 
-        const apiURL = 'http://localhost:8888/phpreact/final/backend/contact.php';
-        event.preventDefault();
+        const apiURL = 'http://localhost:8888/phpreact/final/backend/contact.php'; // set the API endpoint
+        event.preventDefault(); // prevent default submission behavior (ex. enter key press)
 
-
+        // send a POST request with contact data
         const response = await fetch(apiURL, {
-            method: 'POST',
+            method: 'POST', // add the http method
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json' // set the ocntent type to JSON
             },
-            body: JSON.stringify(contact)
+            body: JSON.stringify(contact) // convert the contact object to JSON
         })
-        const data = await response.json();
-        setErrors(data);
+
+        const data = await response.json(); // parse the response as JSON
+        setErrors(data); // update errors with response data
     }
 
 

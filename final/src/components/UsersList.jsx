@@ -4,22 +4,25 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
 function UsersList() {
+    // initialize navigation for redirection and create a state to hold user data
     let navigate = useNavigate();
     const [users, setUsers] = useState([]);
+    // fetch users from the API when the component mounts
     useEffect(() => {
       const apiURL = 'http://localhost:8888/phpreact/final/backend/users.php'; //location of user api logic
       async function fetchUsers() {
         try {
           const response = await fetch(apiURL);
           const data = await response.json();
-          setUsers(data);
+          setUsers(data); // updates state w/ fetched user data
         } catch (error) {
           console.error('Error fetching users:', error);
         }
       }
       fetchUsers();
     }, []);
-
+    
+    // handle user deletion
     const handleDelete = (user_id) => {
 		if(confirm("Are your sure you want to remove it?"))
 		{
